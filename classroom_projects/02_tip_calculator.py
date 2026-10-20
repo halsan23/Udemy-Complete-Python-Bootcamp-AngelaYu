@@ -31,7 +31,7 @@ people = int(input("How many people to split the bill? "))
 # Calculate each person amount due (including tip)
 # -----------------------------------------------------------
 tip_amt = bill * tip
-print(f"\nTip Amount ${tip_amt}")
+print(f"\nTip Amount ${tip_amt:.2f}")
 
 each = (bill + tip_amt) / people
 
