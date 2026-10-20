@@ -50,6 +50,9 @@ each = (bill + tip_amt) / people
 # each person would owe 33 dollars and 60 cents, but it would
 # output as $33.6
 # -----------------------------------------------------------
+# The difference between :.2f and round()
+#   - :.2f | formats a string (output such as a print statement)
+#   - round() | rounds a number (int or float)
 
 # by using the (:.2f) - it forces the output to 2 decimal places : $33.60
 print(f"\nEach person owes ${each:.2f}")
