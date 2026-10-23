@@ -25,7 +25,7 @@ while game_run:
     numb = random.randint(0, 1)
 
     # Title Bar
-    print("    --  COIN   TOSS  --")
+    print("    -   Coin   Toss   -")
     print("-----------------------------")
 
     # Input User Choice
@@ -34,14 +34,16 @@ while game_run:
     # debug
     # print(f"Pick: {pick} | Number: {numb}")
 
-    if pick == "h" or pick == "t":
-        if pick == "h":
+    if pick != "h" and pick != "t" and pick != "heads" and pick != "tails":
+        input("\n**Invalid Input : Press any key to continue: ")
+    else:
+        if pick == "h" or pick == "heads":
             print(f"\n   You called {coin[0]}")
             if numb == 0:
                 print(f"   It was {coin[0]}, You Win!")
             else:
                 print(f"   It was {coin[1]}, Sorry You Lose!")
-        elif pick == "t":
+        elif pick == "t" or pick == "tails":
             print(f"\n   You called {coin[1]}")
             if numb == 1:
                 print(f"   It was {coin[1]}, You Win!")
@@ -51,8 +53,6 @@ while game_run:
         again = input("\n\nPlay Again? (Y/N) ").lower()
         if again != "y":
             break
-    else:
-        input("\n**Invalid Input : Press any key to continue: ")
 
 
 print("\n- Thanks for playing -")
