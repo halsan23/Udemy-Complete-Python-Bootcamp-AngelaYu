@@ -11,12 +11,11 @@ import os
 import random
 
 # Set Variables
-game_run = 1
 coin = ["Heads", "Tails"]
 
 
 # Run Game
-while game_run:
+while True:
     # Clear Screen
     # -----------------------------------------------------------
     subprocess.run("cls" if os.name == "nt" else "clear", shell=True)

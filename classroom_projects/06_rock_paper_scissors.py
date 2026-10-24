@@ -7,11 +7,11 @@
 #  Imports  ##########################
 import subprocess
 import os
-from random import randint
+import random
 
 #  Set Initial Variables  ############
 # set computer choice options
-computer_choices = ["rock", "paper", "scissors"]
+computer_choices = ["Rock", "Paper", "Scissors"]
 # set to 3 for game best 3 out of 5
 win_score = 3
 
@@ -90,10 +90,10 @@ while True:
     title_bar()
 
     # User Input
-    user = input("Enter Rock, Paper, Scissors or (Q)uit to end the game: ").lower()
+    user = input("Enter Rock, Paper, Scissors or (Q)uit to end the game: ").capitalize()
 
     # option for user to end game early
-    if user.lower() == "q" or user.lower() == "quit":
+    if user.lower() == "Q" or user.lower() == "Quit":
         print("\n- User Quit -")
         break
 
@@ -109,9 +109,10 @@ while True:
 
     else:
         # Display computer pick
-        rand_num = randint(0, 2)
-        comp = computer_choices[rand_num]
-        print(f"Computer Choice: - {comp.capitalize()} -\n")
+        # rand_num = randint(0, 2)
+        # comp = computer_choices[rand_num]
+        comp = random.choices(computer_choices)
+        print(f"Computer Choice: - {comp} -\n")
 
         # No Input Errors - Check for win
         winner, win_text = win_check(user, comp)
