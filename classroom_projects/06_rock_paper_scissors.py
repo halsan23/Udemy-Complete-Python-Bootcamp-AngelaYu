@@ -76,7 +76,6 @@ def win_check(user, comp):
     if user == comp.lower():
         winner = None
         win_text = "This round is a tie:"
-        return winner, win_text
 
     # user win scenarios
     elif user == "rock" and comp == "Scissors":
@@ -97,7 +96,6 @@ def win_check(user, comp):
         winner = "computer"
         win_text = "Computer wins this round: - Paper covers Rock"
     else:
-        comp == "Scissors" and user == "paper"
         winner = "computer"
         win_text = "Computer wins this round: - Scissors cut Paper"
 
