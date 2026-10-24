@@ -1,19 +1,34 @@
-import subprocess
-import os
-import random
+rock_img = """
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+"""
 
-computer_choices = ["Rock", "Paper", "Scissors"]
+paper_img = """
+    _______
+---'   ____)____
+          ______)
+          _______)
+         _______)
+---.__________)
+"""
+
+scissors_img = """
+    _______
+---'   ____)____
+          ______)
+       __________)
+      (____)
+---.__(___)
+"""
 
 
-while True:
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
-
-    # id = random.randint(0, len(computer_choices) - 1)
-    # print(f"Id = {id}  |  Computer Choice = {computer_choices[id]}")
-
-    pick = random.choice(computer_choices)
-    print(f"Computer Choice = {pick}")
-
-    end = input("Any key to continue = B)reak: ")
-    if end == "b":
-        break
+print("Rock")
+print(rock_img)
+print("Paper")
+print(paper_img)
+print("Scissors")
+print(scissors_img)

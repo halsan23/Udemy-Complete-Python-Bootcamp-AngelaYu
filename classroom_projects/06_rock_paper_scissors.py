@@ -18,6 +18,36 @@ win_score = 3
 
 
 # ########## Functions  ##############
+# Images
+def images(choice):
+    if choice.lower() == "rock":
+        img = """    _______
+---' ______)
+    (______)
+    (______)
+    (______)
+---.__(____)
+        """
+    elif choice.lower() == "paper":
+        img = """    _______
+---'   ____)______
+        __________)
+        __________)
+        __________)
+---.______________)
+        """
+    else:
+        img = """    ______
+---'   ___)_______
+        __________)
+    ______________)
+    (________)
+---.__(_____)
+        """
+
+    return img
+
+
 # Initial Setup
 def reset():
     # set variables
@@ -114,10 +144,16 @@ while True:
         elif user == "s":
             user = "scissors"
 
-        # Display user & computer choices
-        comp = random.choice(computer_choices)
+        # Display user choice
         print(f"\nYou Chose: - {user.capitalize()} -")
+        print(images(user))
+
+        # Computer selection
+        comp = random.choice(computer_choices)
+
+        # Display computer choice
         print(f"Computer Chooses: {comp}\n")
+        print(images(comp))
 
         # No Input Errors - Check for win
         winner, win_text = win_check(user, comp)
