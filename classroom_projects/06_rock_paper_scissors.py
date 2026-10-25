@@ -72,32 +72,41 @@ def title_bar():
 
 # function to test for win
 def win_check(user, comp):
+    win = ["Rock smashes Scissors", "Paper covers Rock", "Scissors cut Paper"]
+
     # if a tie
     if user == comp.lower():
         winner = None
-        win_text = "This round is a tie:"
 
     # user win scenarios
     elif user == "rock" and comp == "Scissors":
         winner = "user"
-        win_text = "You win this round: - Rock smashes Scissors"
+        text = win[0]
     elif user == "paper" and comp == "Rock":
         winner = "user"
-        win_text = "You win this round: - Paper covers Rock"
+        text = win[1]
     elif user == "scissors" and comp == "Paper":
         winner = "user"
-        win_text = "You win this round: - Scissors cut Paper"
+        text = win[2]
 
     # computer win scenarios
     elif comp == "Rock" and user == "scissors":
         winner = "computer"
-        win_text = "Computer wins this round: - Rock smashes Scissors"
+        text = win[0]
     elif comp == "Paper" and user == "rock":
         winner = "computer"
-        win_text = "Computer wins this round: - Paper covers Rock"
+        text = win[1]
     else:
         winner = "computer"
-        win_text = "Computer wins this round: - Scissors cut Paper"
+        text = win[2]
+
+    # return winner and text
+    if winner == "user":
+        win_text = text + " | You win this round"
+    elif winner == "computer":
+        win_text = text + " | Computer win this round"
+    else:
+        win_text = "Both picked the same | This round is a tie"
 
     return winner, win_text
 
