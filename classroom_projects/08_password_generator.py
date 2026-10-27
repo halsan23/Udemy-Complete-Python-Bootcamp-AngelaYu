@@ -96,12 +96,14 @@ if numbs == "y" or up_case == "Y":
 if spec_char == "y" or up_case == "Y":
     total_choices += 1
 
-if pswd_length % total_choices == 0:
-    lower_case = int(pswd_length / total_choices)
-    each_opt = int(pswd_length / total_choices) - lower_case
+if pswd_length % (total_choices + 1) == 0:
+    each_opt = int(pswd_length / total_choices)
+    lower_case = each_opt
 else:
-    lower_case = int(pswd_length / total_choices) + int((pswd_length % total_choices))
-    each_opt = int(pswd_length / total_choices) - lower_case
+    lower_case = int(pswd_length / total_choices + 1) + int(
+        (pswd_length % total_choices)
+    )
+    each_opt = int(pswd_length / total_choices)
 
 
 # ########  Build Password  ##########
@@ -113,7 +115,9 @@ print(f"\nNumber of Characters: {pswd_length}")
 print(f"Use Upper Case? {up_case.upper()}")
 print(f"Use Numbers? {numbs.upper()}")
 print(f"Use Special Characters? {spec_char.upper()}")
+
 print(f"\nTotal Options Chosen: {total_choices}")
-print(f"# of lower case: {lower_case}")
+
+print(f"\n# of lower case: {lower_case}")
 print(f"# in each of other options: {each_opt}")
-print(f"\nTotal Characters Used: {lower_case + (each_opt * total_choices)}")
+print(f"\nTotal Characters Used: {lower_case + (total_choices * each_opt)}")
