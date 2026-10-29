@@ -1,34 +1,12 @@
-rock_img = """
-    _______
----'   ____)
-      (_____)
-      (_____)
-      (____)
----.__(___)
-"""
-
-paper_img = """
-    _______
----'   ____)____
-          ______)
-          _______)
-         _______)
----.__________)
-"""
-
-scissors_img = """
-    _______
----'   ____)____
-          ______)
-       __________)
-      (____)
----.__(___)
-"""
+######################################
+# App Name
+# Created by - badDoggy | D A T E
+######################################
 
 
-print("Rock")
-print(rock_img)
-print("Paper")
-print(paper_img)
-print("Scissors")
-print(scissors_img)
+# ###########  Imports  ##############
+import subprocess
+import os
+
+# Clear Screen
+subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
