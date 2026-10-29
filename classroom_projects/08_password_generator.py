@@ -1,6 +1,6 @@
 ######################################
 # Password Generator
-# Created by - badDoggy | 09/26/26
+# Created by - badDoggy | 10/29/26
 ######################################
 
 
@@ -8,17 +8,6 @@
 import subprocess
 import os
 import random
-
-
-# ##########  Functions  #############
-def yn_check(text):
-    while True:
-        select = input(f"{text}  (Y/N) ").lower()
-        if select == "y" or select == "yes" or select == "n" or select == "no":
-            return select
-        else:
-            print("Invalid Input - (Y/N) only!\n")
-
 
 # ###########  Variables  ############
 letters = [
@@ -51,75 +40,107 @@ letters = [
 ]
 numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 symbols = ["!", "#", "$", "%", "&", "(", ")", "*", "+"]
-temp_pswd = []
-final_pswd = []
-tmp_pswd = ""
-password = ""
+end = 0
 
-# Clear Screen
-subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+
+# ##########  Functions  #############
+def yn_check(text):
+    while True:
+        select = input(f"{text}  (Y/N) ").lower()
+        if select == "":
+            select = "y"
+        if select == "y" or select == "yes" or select == "n" or select == "no":
+            return select
+        else:
+            print("Invalid Input - (Y/N) only!\n")
 
 
 # ###########  Title Bar  ############
 print("pyPassword Generator")
-print("---------------------------------------------------")
+print("---------------------------------------------------\n")
 
 
 # ############  Inputs  ##############
-# Password Length
 # ------------------------------------
 while True:
-    try:
-        pswd_length = int(input("Enter an integer between 8 and 20: "))
-        if 8 <= pswd_length <= 20:
-            break
-        else:
-            print("Input Error! Must be within range (8-20)")
-    except ValueError:
-        print("Input Error! Must be a number (8-20)")
+    # Clear Screen
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
 
-# Use Uppercase Letters
-# ------------------------------------
-up_case = yn_check("Use Upper Case Letters?")
+    # ###########  Variables  ############
+    temp_pswd = []
+    finished_pswd = []
+    password = ""
 
-# Use Numbers
-# ------------------------------------
-numbs = yn_check("Use Numbers?")
+    # Password Length
+    # ------------------------------------
+    while end == 0:
+        try:
+            pswd_length = int(input("How many Characters for your password? (8-20) "))
+            if 8 <= pswd_length <= 20:
+                break
+            else:
+                print("\nInput Error! Must be within range (8-20)")
+        except ValueError:
+            print("\nInput Error! Must be a number (8-20)")
 
-# Use Special Characters
-# ------------------------------------
-spec_char = yn_check("Use Special Characters??")
+    # Use Uppercase Letters
+    # ------------------------------------
+    up_case = yn_check("\nUse Upper Case Letters?")
 
-x = 1
-while x <= pswd_length:
-    temp_pswd.append(random.choice(letters))
-    x += 1
-    if x > pswd_length:
+    # Use Numbers
+    # ------------------------------------
+    numbs = yn_check("\nUse Numbers?")
+
+    # Use Special Characters
+    # ------------------------------------
+    spec_char = yn_check("\nUse Special Characters??")
+
+    # ######  Build the Password  ########
+    # ------------------------------------
+    # build original password LIST based
+    # on the options selected
+    # ------------------------------------
+    while end == 0:
+        x = 1
+        while x <= pswd_length:
+            temp_pswd.append(random.choice(letters))
+            x += 1
+            if x > pswd_length:
+                break
+            if up_case == "y" or up_case == "yes":
+                temp_pswd.append(random.choice(letters).upper())
+                x += 1
+                if x > pswd_length:
+                    break
+            if numbs == "y" or numbs == "yes":
+                temp_pswd.append(random.choice(numbers))
+                x += 1
+                if x > pswd_length:
+                    break
+            if spec_char == "y" or spec_char == "yes":
+                temp_pswd.append(random.choice(symbols))
+                x += 1
+                if x > pswd_length:
+                    break
+
+    # build the finished password LIST
+    # ------------------------------------
+    while temp_pswd:
+        finished_pswd.append(temp_pswd.pop(random.randrange(len(temp_pswd))))
+
+    # convert the password LIST to a STRING
+    # ------------------------------------
+    password = "".join(finished_pswd)
+
+    # output the results
+    # ------------------------------------
+    print(f"\nYour new password is: {password}")
+
+    # ## Confirm User likers new password #
+    # ------------------------------------
+    again = yn_check("\nKeep this password?")
+    if again == "" or again == "y" or again == "yes":
         break
-    if up_case == "y" or up_case == "yes":
-        temp_pswd.append(random.choice(letters).upper())
-        x += 1
-        if x > pswd_length:
-            break
-    if numbs == "y" or numbs == "yes":
-        temp_pswd.append(random.choice(numbers))
-        x += 1
-        if x > pswd_length:
-            break
-    if spec_char == "y" or spec_char == "yes":
-        temp_pswd.append(random.choice(symbols))
-        x += 1
-        if x > pswd_length:
-            break
-tmp_pswd = "".join(temp_pswd)
-
-print(f"\ntemp password: {tmp_pswd}")
-
-while temp_pswd:
-    final_pswd.append(temp_pswd.pop(random.randrange(len(temp_pswd))))
-
-password = "".join(final_pswd)
-print(f"Final Password: {password}")
 
 
 print("\n\n--  End of Line --\n")
