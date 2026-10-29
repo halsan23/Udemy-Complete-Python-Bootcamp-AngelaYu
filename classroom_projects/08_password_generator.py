@@ -7,6 +7,7 @@
 # ###########  Imports  ##############
 import subprocess
 import os
+import random
 
 
 # ##########  Functions  #############
@@ -16,7 +17,7 @@ def yn_check(text):
         if select == "y" or select == "yes" or select == "n" or select == "no":
             return select
         else:
-            print("Invalid Input - (Y/N) only!")
+            print("Invalid Input - (Y/N) only!\n")
 
 
 # ###########  Variables  ############
@@ -50,6 +51,10 @@ letters = [
 ]
 numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 symbols = ["!", "#", "$", "%", "&", "(", ")", "*", "+"]
+temp_pswd = []
+final_pswd = []
+tmp_pswd = ""
+password = ""
 
 # Clear Screen
 subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
@@ -84,40 +89,37 @@ numbs = yn_check("Use Numbers?")
 # Use Special Characters
 # ------------------------------------
 spec_char = yn_check("Use Special Characters??")
-# spec_char = input("Use Special Characters?  (Y/N) 8").lower()
 
-# Calculate number of characters from each option for even distribution
-# ---------------------------------------------------------------------
-total_choices = 0
-if up_case == "y" or up_case == "Y":
-    total_choices += 1
-if numbs == "y" or up_case == "Y":
-    total_choices += 1
-if spec_char == "y" or up_case == "Y":
-    total_choices += 1
+x = 1
+while x <= pswd_length:
+    temp_pswd.append(random.choice(letters))
+    x += 1
+    if x > pswd_length:
+        break
+    if up_case == "y" or up_case == "yes":
+        temp_pswd.append(random.choice(letters).upper())
+        x += 1
+        if x > pswd_length:
+            break
+    if numbs == "y" or numbs == "yes":
+        temp_pswd.append(random.choice(numbers))
+        x += 1
+        if x > pswd_length:
+            break
+    if spec_char == "y" or spec_char == "yes":
+        temp_pswd.append(random.choice(symbols))
+        x += 1
+        if x > pswd_length:
+            break
+tmp_pswd = "".join(temp_pswd)
 
-if pswd_length % (total_choices + 1) == 0:
-    each_opt = int(pswd_length / total_choices)
-    lower_case = each_opt
-else:
-    lower_case = int(pswd_length / total_choices + 1) + int(
-        (pswd_length % total_choices)
-    )
-    each_opt = int(pswd_length / total_choices)
+print(f"\ntemp password: {tmp_pswd}")
+
+while temp_pswd:
+    final_pswd.append(temp_pswd.pop(random.randrange(len(temp_pswd))))
+
+password = "".join(final_pswd)
+print(f"Final Password: {password}")
 
 
-# ########  Build Password  ##########
-
-
-# debug code
-# ------------------------------------
-print(f"\nNumber of Characters: {pswd_length}")
-print(f"Use Upper Case? {up_case.upper()}")
-print(f"Use Numbers? {numbs.upper()}")
-print(f"Use Special Characters? {spec_char.upper()}")
-
-print(f"\nTotal Options Chosen: {total_choices}")
-
-print(f"\n# of lower case: {lower_case}")
-print(f"# in each of other options: {each_opt}")
-print(f"\nTotal Characters Used: {lower_case + (total_choices * each_opt)}")
+print("\n\n--  End of Line --\n")
