@@ -39,7 +39,7 @@ letters = [
     "z",
 ]
 numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-symbols = ["!", "#", "$", "%", "&", "(", ")", "*", "+"]
+symbols = ["!", "?", "@", "#", "$", "%", "&", "*"]
 
 
 # Functions
@@ -48,15 +48,11 @@ def yn_check(text):
         select = input(f"{text}  (Y/N) ").lower()
         if select == "":
             select = "y"
+
         if select == "y" or select == "yes" or select == "n" or select == "no":
             return select
         else:
             print("Invalid Input - (Y/N) only!\n")
-
-
-# Title Bar
-print("pyPassword Generator")
-print("---------------------------------------------------\n")
 
 
 # Run the Generator
@@ -67,6 +63,10 @@ while True:
     # Variables
     initial_password = ""
     password = ""
+
+    # Title Bar
+    print("        pyPassword Generator")
+    print("----------------------------------------------\n")
 
     # Password Length Input
     while True:
@@ -120,8 +120,8 @@ while True:
     print(f"\nYour new password is: {password}")
 
     # Confirm User likes new password
-    again = yn_check("\nKeep this password?")
-    if again == "" or again == "y" or again == "yes":
+    again = yn_check("\nKeep this password? ")
+    if again == "y" or again == "yes":
         break
 
 
