@@ -10,3 +10,7 @@ import os
 
 # Clear Screen
 subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+
+
+# End the app
+print("\n\n--  End of Line --\n")
