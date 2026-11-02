@@ -1,54 +1,52 @@
-######################################
+#####################################
 # Hangman
 # Created by - badDoggy | 11/01/26
-######################################
+#####################################
 
-
-# ###########  Imports  ##############
+# ##########  Imports  ##############
 import subprocess
 import os
 import random
 from wordlist import words
+from hangman_ascii import hangman_text, stages
 
 # ######  Global Variables  ##########
 hangman_word = random.choice(words)
+placeholder = ""
+for x in range(len(hangman_word)):
+    placeholder += "_"
 
-
-# Clear Screen & Set Title
-subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
-print("****************************************")
-print("*       - -   H A N G M A N   - -      *")
-print("* ------------------------------------ *")
-print("*   can you save me from the gallows   *")
-print("****************************************\n")
-
-
-# ##########  User Guess  ############
-print("I'm thinking of a word..")
 
 while True:
     # variables for loop
-    match = False
-    user_choice = input("Guess a letter? (Quit to end play)").lower()
+    display = ""
+
+    # Clear Screen & Set Title
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    print(f"{hangman_word}\n")
+    print(hangman_text)
+    print(f"I'm thinking of a word: {placeholder}\n")
+
+    # User Guess a letter
+    user_choice = input("Guess a letter? (Quit to end play)  ").lower()
 
     if user_choice == "quit":
         break
 
     for letter in hangman_word:
         if letter == user_choice:
-            match = True
-            break
+            display += letter
+        else:
+            display += "_"
+    break
 
-    if match:
-        print(f"Yes, there is an {user_choice} in {hangman_word}.\n")
-    else:
-        print(f"There is no {user_choice} in {hangman_word}.\n")
+print(display)
 
-
-# Debug Code
-# print(f"\nThe Word is: {hangman_word}")
-# print(user_choice)
+print()
+for x in range(len(stages)):
+    print(stages[x])
 
 
 # End the app
-print("\n\n--  End of Line --\n")
+print("\n\n -  GAME  OVER  -")
+print("\n--  End of Line --\n")
