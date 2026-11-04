@@ -1,3 +1,42 @@
+words = [
+    "aardvark",
+    "baboon",
+    "battery",
+    "blanket",
+    "brother",
+    "camel",
+    "captain",
+    "century",
+    "chicken",
+    "diamond",
+    "display",
+    "dolphin",
+    "elephant",
+    "evening",
+    "fifteen",
+    "freedom",
+    "glacier",
+    "gravity",
+    "harvest",
+    "helpful",
+    "inspect",
+    "journey",
+    "justice",
+    "kingdom",
+    "kitchen",
+    "machine",
+    "nothing",
+    "painted",
+    "quickly",
+    "rainbow",
+    "shelter",
+    "teacher",
+    "uniform",
+    "village",
+    "welcome",
+]
+
+
 hangman_text = """
  _   _
 | | | |  - can you save me from the gallows -
@@ -8,6 +47,7 @@ hangman_text = """
                     __/ |
                    |___/
 """
+
 
 # hangman_art = """
 # ****************************************
