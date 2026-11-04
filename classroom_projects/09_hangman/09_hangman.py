@@ -101,7 +101,7 @@ while True:
     else:
         current_text = display
 
-    print(f"I'm thinking of a word: {current_text}")
+    print(f"To save me, show them the secret word: {current_text}")
     print(stages[lives])
 
     if lives == 0:
@@ -114,7 +114,7 @@ while True:
             break
 
     elif "_" not in current_text:
-        print("\n -  You  Win!!  -\n")
+        print(f' -  You  Win!!  -\nThe word was: "{hangman_word}"\n')
         again = play_again()
         if again:
             end_game = True
@@ -156,8 +156,5 @@ while True:
             input_error = "ERROR! Use only available letters"
 
 
-# End the app
-if user_choice == "quit":
-    print("\n -  User  Quit  -")
-print(" -  GAME  OVER  -")
-print("\n--  End of Line --\n")
+# ##########  End the app  ##########
+print("\n\n--  End of Line --\n")
