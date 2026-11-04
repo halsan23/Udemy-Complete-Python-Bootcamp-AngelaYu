@@ -1,6 +1,6 @@
 #####################################
 # Hangman
-# Created by - badDoggy | 11/01/26
+# Created by - badDoggy | 11/04/26
 #####################################
 
 # ##########  Imports  ##############
@@ -63,7 +63,7 @@ def reset():
 
 
 def play_again():
-    again = input("Would you like yo play again?  (Y/N) ").lower()
+    again = input("Would you like to play again?  (Y/N) ").lower()
     if again == "y":
         return True
     else:
@@ -124,7 +124,7 @@ while True:
 
     if not end_game:
         # User Guess a letter
-        print(f"Available letters: {"".join(letters)}\n{input_error}\n")
+        print(f"Available letters: {''.join(letters)}\n{input_error}\n")
 
         user_choice = input("Guess a letter? (Quit to end play)  ").lower()
 
@@ -149,11 +149,13 @@ while True:
                 else:
                     display += "_"
 
-            if user_choice not in hangman_word:
+            if user_choice.lower() not in hangman_word.lower():
                 lives -= 1
 
         else:
-            input_error = "ERROR! Use only available letters"
+            input_error = (
+                "ERROR! Please enter a single unused letter from the list above."
+            )
 
 
 # ##########  End the app  ##########
