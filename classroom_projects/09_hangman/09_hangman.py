@@ -95,7 +95,7 @@ while True:
     print(hangman_text)
 
     # Debug Code
-    print(f"{hangman_word}\n")
+    # print(f"{hangman_word}\n")
 
     if not correct_letters:
         current_text = placeholder
