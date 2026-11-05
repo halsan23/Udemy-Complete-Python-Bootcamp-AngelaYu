@@ -62,7 +62,8 @@ def reset():
     )
 
 
-def play_again():
+def play_again(text):
+    print(text)
     again = input("Would you like to play again?  (Y/N) ").lower()
     if again == "y":
         return True
@@ -94,7 +95,7 @@ while True:
     print(hangman_text)
 
     # Debug Code
-    # print(f"{hangman_word}\n")
+    print(f"{hangman_word}\n")
 
     if not correct_letters:
         current_text = placeholder
@@ -105,20 +106,14 @@ while True:
     print(stages[lives])
 
     if lives == 0:
-        print(f'\nSorry, You Lose!\nThe word was: "{hangman_word}"\n')
-        again = play_again()
-        if again:
-            end_game = True
-        else:
+        end_game = play_again(f'\nSorry, You Lose!\nThe word was: "{hangman_word}"\n')
+        if not end_game:
             print()
             break
 
     elif "_" not in current_text:
-        print(f' -  You  Win!!  -\nThe word was: "{hangman_word}"\n')
-        again = play_again()
-        if again:
-            end_game = True
-        else:
+        end_game = play_again(f' -  You  Win!!  -\nThe word was: "{hangman_word}"\n')
+        if not end_game:
             print()
             break
 
