@@ -10,6 +10,15 @@ import subprocess
 import os
 import random
 
+
+# #########  Functions  ##############
+# Clear Screen
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
+
+
 # Set Variables
 coin = ["Heads", "Tails"]
 
@@ -17,8 +26,7 @@ coin = ["Heads", "Tails"]
 # Run Game
 while True:
     # Clear Screen
-    # -----------------------------------------------------------
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    clear_screen()
 
     # get random number between 0 and 1
     numb = random.randint(0, 1)

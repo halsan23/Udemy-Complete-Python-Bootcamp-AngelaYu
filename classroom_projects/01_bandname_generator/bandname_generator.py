@@ -10,13 +10,18 @@
 import subprocess
 import os
 
+
+# #########  Functions  ##############
 # Clear Screen
-# -----------------------------------------------------------
-subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
 
 
 # Title & Description
 # -----------------------------------------------------------
+clear_screen()
 print("Band Name Generator")
 
 print('We\'re going to help you create a "Band Name".\n')

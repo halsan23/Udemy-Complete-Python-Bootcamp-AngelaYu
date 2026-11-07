@@ -42,7 +42,15 @@ numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 symbols = ["!", "?", "@", "#", "$", "%", "&", "*"]
 
 
-# Functions
+# #########  Functions  ##############
+# Clear Screen
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
+
+
+# Yes/No Inputs Validation
 def yn_check(text):
     while True:
         select = input(f"{text}  (Y/N) ").lower()
@@ -58,7 +66,7 @@ def yn_check(text):
 # Run the Generator
 while True:
     # Clear Screen
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    clear_screen()
 
     # Variables
     initial_password = ""

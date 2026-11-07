@@ -13,13 +13,18 @@
 import subprocess
 import os
 
+
+# #########  Functions  ##############
 # Clear Screen
-# -----------------------------------------------------------
-subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
 
 
 # Title
 # -----------------------------------------------------------
+clear_screen()
 print("Tip Calculator!\n")
 
 # Inputs to set variables
@@ -55,6 +60,9 @@ each = (bill + tip_amt) / people
 #   - round() | rounds a number (int or float)
 
 # by using the (:.2f) - it forces the output to 2 decimal places : $33.60
-print(f"\nEach person owes ${each:.2f}")
+print(f"\nEach person owes ${each:.2f}\n")
+print(
+    f"This is the bill (${bill:.2f}), plus the tip amount (${tip_amt:.2f}), divided by the number of people ({people}), splitting the bill."
+)
 
 print("\n\n- End of Line -")

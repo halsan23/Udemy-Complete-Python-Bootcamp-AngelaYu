@@ -11,6 +11,14 @@ from hangman_ascii import hangman_text, stages, words
 
 
 # #########  Functions  ##############
+# Clear Screen
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
+
+
+# Reset Variables
 def reset():
     hangman_word = random.choice(words)
     correct_letters = []
@@ -90,7 +98,7 @@ while True:
             letters,
         ) = reset()
     # Clear Screen & Set Title
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    clear_screen()
     # Print Hangman logo
     print(hangman_text)
 

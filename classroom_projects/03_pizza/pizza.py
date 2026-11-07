@@ -10,10 +10,16 @@
 import subprocess
 import os
 
-# Clear Screen
-# -----------------------------------------------------------
-subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
 
+# #########  Functions  ##############
+# Clear Screen
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
+
+
+clear_screen()
 
 # base variables
 # -----------------------------------------------------------

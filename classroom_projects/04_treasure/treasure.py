@@ -9,9 +9,13 @@
 import subprocess
 import os
 
+
+# #########  Functions  ##############
 # Clear Screen
-# -----------------------------------------------------------
-subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
 
 
 # set win_lose variable
@@ -19,6 +23,7 @@ subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
 win_lose = "-- You Lose --"
 
 
+clear_screen()
 # supplied text graphic
 # -----------------------------------------------------------
 print(r'''

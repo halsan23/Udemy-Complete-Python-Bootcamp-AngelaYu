@@ -17,7 +17,14 @@ computer_choices = ["Rock", "Paper", "Scissors"]
 win_score = 3
 
 
-# ########## Functions  ##############
+# #########  Functions  ##############
+# Clear Screen
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
+
+
 # Images
 def images(choice):
     if choice.lower() == "rock":
@@ -118,7 +125,7 @@ user_score, comp_score, tie_score, turn = reset()
 # Play the Game
 while True:
     # Clear Screen
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    clear_screen()
 
     # Display Title Bar
     title_bar()

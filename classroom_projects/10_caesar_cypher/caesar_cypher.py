@@ -4,80 +4,40 @@
 #####################################
 
 # ##########  Imports  ##############
-import subprocess
 import os
-
-# #########  Variables  #############
-alphabet = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-]
-logo = """
- ,adPPYba, ,adPPYYba,  ,adPPYba, ,adPPYba, ,adPPYYba, 8b,dPPYba,
-a8"     "" ""     `Y8 a8P_____88 I8[    "" ""     `Y8 88P'   "Y8
-8b         ,adPPPPP88 8PP""  ""  `"Y8ba,   ,adPPPPP88 88
-"8a,   ,aa 88,    ,88 "8b,   ,aa aa    ]8I 88,    ,88 88
- `"Ybbd8"' `"8bbdP"Y8  `"Ybbd8"' `"YbbdP"' `"8bbdP"Y8 88
-
-           ##             88
-                          88
- ,adPPYba, 88 8b,dPPYba,  88,dPPYba,   ,adPPYba, 8b,dPPYba,
-a8"     "" 88 88P'    "8a 88P'    "8a a8P_____88 88P'   "Y8
-8b         88 88       d8 88       88 8PP""  ""  88
-"8a,   ,aa 88 88b,   ,a8" 88       88 "8b,   ,aa 88
- `"Ybbd8"' 88 88`YbbdP"'  88       88  `"Ybbd8"' 88
-              88
-              88
-"""
-end_app = False
+import subprocess
+from data import alphabet, logo
 
 
 # #########  Functions  ##############
+# Clear Screen & display the logo
+def clear_screen():
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    command = "cls" if os.name == "nt" else "clear"
+    subprocess.run(command, shell=True, check=False)
+    print(logo)
+
+
 def cypher(original_text, shift_amount, cypher_type):
     cipher_text = ""
     for letter in original_text:
-        if letter == " ":
-            cipher_text += " "
-        elif cypher_type == "encode":
-            cipher_text += alphabet[
-                (alphabet.index(letter) + shift_amount) % len(alphabet)
-            ]
+        if letter in alphabet:
+            if cypher_type == "encode":
+                cipher_text += alphabet[
+                    (alphabet.index(letter) + shift_amount) % len(alphabet)
+                ]
+            else:
+                cipher_text += alphabet[
+                    (alphabet.index(letter) - shift_amount) % len(alphabet)
+                ]
         else:
-            cipher_text += alphabet[
-                (alphabet.index(letter) - shift_amount) % len(alphabet)
-            ]
+            cipher_text += letter  # Leave non-alphabet characters unchanged
 
     return cipher_text
 
 
-def initial_display():
-    # Clear Screen & display the logo
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
-    print(logo)
+# #########  Variables  #############
+end_app = False
 
 
 # Run the app
@@ -89,7 +49,7 @@ while True:
     # local variable
     good_input = False
 
-    initial_display()
+    clear_screen()
 
     # Encrypt or Decrypt Input
     while not good_input:
@@ -108,30 +68,32 @@ while True:
             process = "decode"
             break
         else:
-            initial_display()
+            clear_screen()
             print("\nInvalid Input!! Choose from available options only!\n")
 
-    # Shift Amount Input
-    while not good_input:
+        # Shift Amount Input
         try:
             shift = int(input("Type the shift number: (1 to 26) "))
             if shift < 1 or shift > 26:
                 print("\nInvalid Input!! | Choose a valid number: (1 to 26)!\n")
             else:
                 break
-        except:
+        except ValueError:
+            print("\nInvalid Input!! | Choose a valid number: (1 to 26)!\n")
             print("\nInvalid Input!! | Choose a valid number: (1 to 26)!\n")
 
     # Message to Encrypt or Decrypt Input
     while not good_input:
-        error = ""
+        has_error = False
         text = input(f"\nEnter the message to {process}: ").lower()
         for letter in text:
             if letter not in alphabet and letter != " ":
-                error = "\nInvalid Input!! | Choose a valid letter (A to Z) or a space only!"
-        if error != "":
-            print(error)
-        else:
+                has_error = True
+                print(
+                    "\nInvalid Input!! | Choose a valid letter (A to Z) or a space only!"
+                )
+                break
+        if not has_error:
             break
 
     # routing for either encrypt or decrypt
