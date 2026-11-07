@@ -57,49 +57,44 @@ end_app = False
 
 
 # #########  Functions  ##############
-def encrypt(original_text, shift_amount):
+def cypher(original_text, shift_amount, cypher_type):
     cipher_text = ""
     for letter in original_text:
-        if letter in alphabet:
+        if letter == " ":
+            cipher_text += " "
+        elif cypher_type == "encode":
             cipher_text += alphabet[
                 (alphabet.index(letter) + shift_amount) % len(alphabet)
             ]
         else:
-            cipher_text += " "
-
-    return cipher_text
-
-
-def decrypt(original_text, shift_amount):
-    cipher_text = ""
-    for letter in original_text:
-        if letter in alphabet:
             cipher_text += alphabet[
                 (alphabet.index(letter) - shift_amount) % len(alphabet)
             ]
-        else:
-            cipher_text += " "
 
     return cipher_text
+
+
+def initial_display():
+    # Clear Screen & display the logo
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    print(logo)
 
 
 # Run the app
 while True:
-    # for run app again loop
+    # run app again loop
     if end_app:
         break
 
     # local variable
     good_input = False
 
-    # Clear Screen & display the logo
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
-    print(logo)
+    initial_display()
 
     # Encrypt or Decrypt Input
     while not good_input:
         direction = input(
-            "   E)ncode to encrypt \n   D)ecode to decrypt\n   Q)uit\n\nPlease choose: "
+            "Would you like to:\n\n   E)ncode\n   D)ecode\n   Q)uit\n\nPlease choose: "
         ).lower()
 
         if direction == "q" or direction == "quit":
@@ -107,14 +102,14 @@ while True:
             good_input = True
             break
         elif direction == "e":
-            process = "encrypt"
+            process = "encode"
             break
         elif direction == "d":
-            process = "decrypt"
+            process = "decode"
             break
         else:
-            print("\nInvalid Input!! | Choose from available options only!\n")
-            break
+            initial_display()
+            print("\nInvalid Input!! Choose from available options only!\n")
 
     # Shift Amount Input
     while not good_input:
@@ -129,23 +124,19 @@ while True:
 
     # Message to Encrypt or Decrypt Input
     while not good_input:
+        error = ""
         text = input(f"\nEnter the message to {process}: ").lower()
         for letter in text:
             if letter not in alphabet and letter != " ":
-                print(
-                    "\nInvalid Input!! | Choose a valid letter (A to Z) or a space only!\n"
-                )
-                break
-        break
+                error = "\nInvalid Input!! | Choose a valid letter (A to Z) or a space only!"
+        if error != "":
+            print(error)
+        else:
+            break
 
     # routing for either encrypt or decrypt
     if not good_input:
-        # Encrypt
-        if direction == "e" or direction == "encode":
-            print(f"\nYour encrypted message is: {encrypt(text, shift)}")
-        # Decrypt
-        elif direction == "d" or direction == "decode":
-            print(f"\nYour decrypted message is: {decrypt(text, shift)}")
+        print(f"\nYour {process}d message is: {cypher(text, shift, process)}")
 
     # run app again?
     while not end_app:
