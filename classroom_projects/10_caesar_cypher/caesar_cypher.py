@@ -21,6 +21,7 @@ def clear_screen():
 def cypher(original_text, shift_amount, cypher_type):
     cipher_text = ""
     for letter in original_text:
+        # if the letter is alphabetic
         if letter in alphabet:
             if cypher_type == "encode":
                 cipher_text += alphabet[
@@ -30,8 +31,9 @@ def cypher(original_text, shift_amount, cypher_type):
                 cipher_text += alphabet[
                     (alphabet.index(letter) - shift_amount) % len(alphabet)
                 ]
+        # if the letter is non-alphabetic
         else:
-            cipher_text += letter  # Leave non-alphabet characters unchanged
+            cipher_text += letter
 
     return cipher_text
 
@@ -74,7 +76,9 @@ while True:
     # Shift Amount Input
     while not good_input:
         try:
-            shift = int(input("Type the shift number: (1 to 26) "))
+            shift = int(
+                input(f"What shift amount should I use for the {process}: (1 to 26) ")
+            )
             if shift < 1 or shift > 26:
                 print("\nInvalid Input!! | Choose a valid number: (1 to 26)!\n")
             else:
@@ -82,19 +86,10 @@ while True:
         except ValueError:
             print("\nInvalid Input!! | Choose a valid number: (1 to 26)!\n")
 
-    # Message to Encrypt or Decrypt Input
+    # Message to Encode or Decode Input
     while not good_input:
-        has_error = False
-        text = input(f"\nEnter the message to {process}: ").lower()
-        for letter in text:
-            if letter not in alphabet and letter != " ":
-                has_error = True
-                print(
-                    "\nInvalid Input!! | Choose a valid letter (A to Z) or a space only!"
-                )
-                break
-        if not has_error:
-            break
+        text = input(f"\nEnter the message to be {process}d: ").lower()
+        break
 
     # routing for either encrypt or decrypt
     if not good_input:
