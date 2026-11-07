@@ -71,7 +71,8 @@ while True:
             clear_screen()
             print("\nInvalid Input!! Choose from available options only!\n")
 
-        # Shift Amount Input
+    # Shift Amount Input
+    while not good_input:
         try:
             shift = int(input("Type the shift number: (1 to 26) "))
             if shift < 1 or shift > 26:
@@ -79,7 +80,6 @@ while True:
             else:
                 break
         except ValueError:
-            print("\nInvalid Input!! | Choose a valid number: (1 to 26)!\n")
             print("\nInvalid Input!! | Choose a valid number: (1 to 26)!\n")
 
     # Message to Encrypt or Decrypt Input
