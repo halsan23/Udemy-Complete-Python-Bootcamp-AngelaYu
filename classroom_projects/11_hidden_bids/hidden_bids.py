@@ -24,7 +24,7 @@ def get_winner(bid_dict):
     # find the max value in a dictionary
     # return key and value
     # https://www.geeksforgeeks.org/python/python-get-key-with-maximum-value-in-dictionary/
-    winner = max(bid_dict, key=bid_dict.get).capitalize()
+    winner = max(bid_dict, key=bid_dict.get).title()
     win_amt = max(bid_dict.values())
 
     # Display the results
@@ -64,7 +64,7 @@ while not end_app:
 
     # Are there any other bidders
     again = input("\nAre there any other bidders? (Y/N) ").lower()
-    if again == "n" or again != "":
+    if again == "n" and again != "":
         # Determine the highest bid and the winner
         # Display the results
         get_winner(current_bids)
