@@ -1,6 +1,6 @@
 #####################################
 # Blind Auction - Hidden Bids
-# Created by - badDoggy | 11/09/26
+# Created by - badDoggy | 11/10/26
 #####################################
 
 
@@ -11,16 +11,17 @@ from gavel import logo
 
 
 # #########  Functions  ##############
-# Clear Screen
-def clear_screen():
+# clear the screen and display the logo
+def clear_screen(logo):
     subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
     command = "cls" if os.name == "nt" else "clear"
     subprocess.run(command, shell=True, check=False)
+    print(logo)
 
 
 # Determine the highest bid and the winner
 # Display the results
-def get_winner(bid_dict):
+def get_winner(bid_dict, logo):
     # find the max value in a dictionary
     # return key and value
     # https://www.geeksforgeeks.org/python/python-get-key-with-maximum-value-in-dictionary/
@@ -28,8 +29,7 @@ def get_winner(bid_dict):
     win_amt = max(bid_dict.values())
 
     # Display the results
-    clear_screen()
-    print(logo)
+    clear_screen(logo)
     print(f"\n{winner} wins this fabulous item with a bid of ${win_amt:.2f}")
 
 
@@ -40,8 +40,7 @@ end_app = False
 
 while not end_app:
     # clear the screen and display the logo
-    clear_screen()
-    print(logo)
+    clear_screen(logo)
 
     # Input a bidder name
     bidder = input("Q)uit or enter Bidder name? ")
@@ -67,7 +66,7 @@ while not end_app:
     if again == "n" and again != "":
         # Determine the highest bid and the winner
         # Display the results
-        get_winner(current_bids)
+        get_winner(current_bids, logo)
         end_app = True
 
 
