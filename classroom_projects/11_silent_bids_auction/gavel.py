@@ -1,5 +1,5 @@
 logo = r'''
-  H I D D E N    B I D S    A U C T I O N S
+  S I L E N T    B I D S    A U C T I O N S
      ___________
      \         /
       )_______(
