@@ -22,80 +22,101 @@ def clear_screen():
     print("---------------------------\n")
 
 
-# Deal cards and display the results
-def deal_card(player):
+# Deal the cards
+def deal_cards(turn):
+    if turn == "initial":
+        for card in range(0, 2):
+            dealer_hand.append(random.choice(list(cards)))
+            player_hand.append(random.choice(list(cards)))
+    elif turn == "player":
+        player_hand.append(random.choice(list(cards)))
+    else:
+        dealer_hand.append(random.choice(list(cards)))
+
+    return turn
+
+
+# Display the cards
+def display_cards(turn):
+    if turn == "initial":
+        print(f"Dealer Cards:  {dealer_hand[1]}  Hidden")
+
+        # print the player card ant it's value
+        # print(f"Player Card:   {player_hand[0]}  {player_hand[1]}")
+        print(f"Player Cards:  {"  ".join(player_hand)}")
+    else:
+        print()
+        print("Dealer Cards:  " + "  ".join(dealer_hand))
+        print("Player Cards:  " + "  ".join(player_hand))
+
+
+# Determine hand totals
+def card_totals():
     dealer_total = 0
     player_total = 0
-    if player == "initial":
-        # get initial cards
+    for card in dealer_hand:
+        dealer_total += cards[card]
+    for card in player_hand:
+        player_total += cards[card]
 
-        # debug code
-        dealer_hand.append(11)
-        dealer_hand.append(10)
-        for x in range(0, 2):
-
-            # dealer_hand.append(random.choice(cards))
-            player_hand.append(random.choice(cards))
-
-        # debug code
-        dealer_total = card_totals(dealer_hand)
-        print(
-            f"Dealer has {dealer_hand[0]}, {dealer_hand[1]} - -  total: {dealer_total}"
-        )
-        print(f"Dealer is showing: {dealer_hand[0]}\n")
-
-        # get player total
-        player_total = card_totals(player_hand)
-        # display player cards
-        print(
-            f"Player has {player_hand[0]}, {player_hand[1]} - -  total: {player_total}"
-        )
-
-    elif player == "dealer":
-        # dealer gets a card
-        dealer_hand.append(random.choice(cards))
-        # get dealer total
-        dealer_total = card_totals(dealer_hand)
-        # display dealer cards
-        print(f"Dealer has {" ".join(dealer_hand)} - -  total: {dealer_total}\n")
-    else:
-        # player gets a card
-        player_hand.append(random.choice(cards))
-        # get player total
-        player_total = card_totals(player_hand)
-        # display player cards
-        print(
-            f"Player has {player_hand[0]}, {player_hand[1]} - -  total: {player_total}"
-        )
+    for card in player_hand:
+        if card == "A" and player_total > 21:
+            player_hand[card] = 1
 
     return dealer_total, player_total
 
 
-def card_totals(hand):
-    total = 0
-    for amt in range(0, len(hand)):
-        total += hand[amt]
-    return total
-
-
 # #########  Variables  ##############
-cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+cards = {
+    "A": 11,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "10": 10,
+    "J": 10,
+    "Q": 10,
+    "K": 10,
+}
 dealer_hand = []
 player_hand = []
 end_game = False
+game_over = False
 
 
 while not end_game:
+    round = "initial"
     # Clear Screen & Display Logo
     clear_screen()
 
     # deal initial cards
-    dealer_total, player_total = deal_card("initial")
+    while round == "initial":
+        deal_cards(round)
+        display_cards(round)
+        dealer_total, player_total = card_totals()
+        print()
+        if round != "initial":
+            print(f"Dealer has: {dealer_total}")
+        print(f"Player has: {player_total}")
+        round = "player"
 
-    if dealer_total == 21:
-        print(f"Dealer has BLACKJACK!!  - - Dealer Wins")
-        print(f"{" ".join(dealer_hand)} - -  total: {dealer_total}\n")
+        if dealer_total == 21:
+            clear_screen()
+            display_cards(round)
+            print(f"\nDealer Wins!!  -  Dealer has Blackjack!!")
+            game_over = True
+        elif player_total == 21:
+            clear_screen()
+            display_cards(round)
+            print(f"\nPlayer Wins!!  -  Player has Blackjack!!")
+            game_over = True
 
+        if game_over:
+            play_again(): ## need to define this function
     end_game = True
 
 
