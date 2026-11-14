@@ -39,7 +39,7 @@ def deal_cards(turn):
 # Display the cards
 def display_cards(turn):
     if turn == "initial":
-        print(f"Dealer Cards:  {dealer_hand[1]}  Hidden")
+        print(f"Dealer Cards:  XX  {dealer_hand[1]}")
 
         # print the player card ant it's value
         # print(f"Player Card:   {player_hand[0]}  {player_hand[1]}")
@@ -66,6 +66,16 @@ def card_totals():
     return dealer_total, player_total
 
 
+# Reset variables for new game
+def game_reset():
+    dealer_hand = []
+    player_hand = []
+    round = "initial"
+    game_over = False
+
+    return dealer_hand, player_hand, round, game_over
+
+
 # #########  Variables  ##############
 cards = {
     "A": 11,
@@ -82,14 +92,9 @@ cards = {
     "Q": 10,
     "K": 10,
 }
-dealer_hand = []
-player_hand = []
-end_game = False
-game_over = False
+dealer_hand, player_hand, round, game_over = game_reset()
 
-
-while not end_game:
-    round = "initial"
+while not game_over:
     # Clear Screen & Display Logo
     clear_screen()
 
@@ -102,22 +107,56 @@ while not end_game:
         if round != "initial":
             print(f"Dealer has: {dealer_total}")
         print(f"Player has: {player_total}")
-        round = "player"
 
         if dealer_total == 21:
             clear_screen()
-            display_cards(round)
+            display_cards("dealer")
             print(f"\nDealer Wins!!  -  Dealer has Blackjack!!")
             game_over = True
+            break
         elif player_total == 21:
             clear_screen()
-            display_cards(round)
+            display_cards("player")
             print(f"\nPlayer Wins!!  -  Player has Blackjack!!")
             game_over = True
+            break
+        else:
+            while True:
+                player_turn = input("\nPlayer's Turn: Q)uit, H)it or P)ass? ").lower()
+                if player_turn == "q" or player_turn == "quit":
+                    print("Player Quit...")
+                    game_over = True
+                    break
+                elif player_turn == "h" or player_turn == "hit":
+                    # clear_screen()
+                    # deal_cards("player")
+                    # display_cards(round)
+                    # dealer_total, player_total = card_totals()
+                    # if player_total > 21:
+                    #     # clear_screen()
+                    #     # display_cards(round)
+                    #     print(f"\nPlayer Bust: {player_total}")
+                    #     game_over = True
+                    #     break
+                    print(f"\nPlayer Hits...")
+                    game_over = True
+                    break
+                elif player_turn == "p" or player_turn == "pass":
+                    print("Dealer's turn...")
+                    game_over = True
+                    break
+                else:
+                    print("\nERROR: Invalid Input!!")
+                    input("Press any key to continue...")
+                    clear_screen()
+                    display_cards("player")
 
-        if game_over:
-            play_again(): ## need to define this function
-    end_game = True
+    if game_over:
+        again = input("\nPlay Again?  (Y/N) ").lower()
+        if again == "y":
+            dealer_hand, player_hand, round, game_over = game_reset()
+        else:
+            game_over = True
 
 
 # End the app
