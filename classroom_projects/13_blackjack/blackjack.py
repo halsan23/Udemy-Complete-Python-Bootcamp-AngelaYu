@@ -90,6 +90,7 @@ cards = {
 }
 dealer_hand, player_hand, turn, game_over = game_reset()
 
+
 while not game_over:
     # Clear Screen & Display Logo
     clear_screen()
@@ -152,7 +153,7 @@ while not game_over:
                 dealer_total, player_total = card_totals()
 
                 # debug code
-                print(f"Dealer Total: {dealer_total}")
+                # print(f"Dealer Total: {dealer_total}")
 
             if dealer_total > 21:
                 print(f"\nDealer is BUST with {dealer_total}  -  Player Wins!")
