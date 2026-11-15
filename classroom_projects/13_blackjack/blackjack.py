@@ -23,7 +23,7 @@ def clear_screen():
 # Deal the cards
 def deal_cards(turn):
     if turn == "initial":
-        for card in range(2):
+        for _ in range(2):
             dealer_hand.append(random.choice(list(cards)))
             player_hand.append(random.choice(list(cards)))
     elif turn == "player":
