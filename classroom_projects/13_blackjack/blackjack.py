@@ -89,6 +89,7 @@ cards = {
     "Q": 10,
     "K": 10,
 }
+
 dealer_hand, player_hand, turn, choice, game_over = game_reset()
 
 
@@ -103,15 +104,12 @@ while not game_over:
     dealer_total, player_total = card_totals()
 
     # Check for Blackjack
-    # if Dealer has BlackJack - Dealer Wins
-    if dealer_total == 21:
+    if dealer_total == 21 and len(dealer_hand) == 2:
         clear_screen()
         display_cards("dealer")
         print(f"\nDealer Wins!!  -  Dealer has Blackjack!!")
         game_over = True
-
-    # if Player has BlackJack - Player Wins
-    elif player_total == 21:
+    elif player_total == 21 and len(player_hand) == 2:
         clear_screen()
         display_cards("player")
         print(f"\nPlayer Wins!!  -  Player has Blackjack!!")
@@ -125,7 +123,6 @@ while not game_over:
             choice = input(f"Do you want to H)it, S)tand, or Q)uit? ").lower()
             if choice == "q" or choice == "quit":
                 print("\nPlayer quit...")
-                choice = True
                 game_over = True
                 break
 
@@ -138,7 +135,9 @@ while not game_over:
 
                 # if player is over 21 : Player Bust
                 if player_total > 21:
-                    print(f"\nPlayer is BUST with {player_total}  -  Dealer Wins!")
+                    print(
+                        f"\nPlayer is BUST with {player_total}  -  Dealer Wins! with {dealer_total}"
+                    )
                     game_over = True
                     break
 
@@ -156,6 +155,8 @@ while not game_over:
         # Dealer's Turn
         if not game_over:
             turn = "dealer"
+            print(f"\nDealer has {dealer_total}:")
+            print(f"Player has {player_total}:")
             clear_screen()
             display_cards("dealer")
 
@@ -165,10 +166,16 @@ while not game_over:
                 deal_cards(turn)
                 display_cards("dealer")
                 dealer_total, player_total = card_totals()
+                print(f"\nDealer draws: {dealer_hand[-1]}")
+                print(f"\nDealer has {dealer_total}:")
+                print(f"Player has {player_total}:")
+                input("\nPress any key to continue...")
 
             # if dealer is over 21 : Dealer Bust
-            elif dealer_total > 21:
+            if dealer_total > 21:
                 print(f"\nDealer is BUST with {dealer_total}  -  Player Wins!")
+                print(f"Player has {player_total}:")
+                game_over = True
 
             # check for winner
             else:
@@ -176,14 +183,19 @@ while not game_over:
                     print(f"\nGame is a draw at {dealer_total}  -  Dealer wins!")
                 elif dealer_total > player_total:
                     print(f"\nDealer wins with {dealer_total}")
+                    print(f"Player has {player_total}:")
                 else:
                     print(f"\nPlayer Wins with {player_total}")
+                    print(f"Dealer has {dealer_total}:")
+
+                game_over = True
+            # if game_over:
+            #     break
 
         # Game is over : Set up for Play Again loop
-        game_over = True
 
     # ask to play again
-    if game_over and not choice:
+    if game_over:
         again = input("\nPlay Again?  (Y/N) ").lower()
         if again == "y":
             dealer_hand, player_hand, turn, choice, game_over = game_reset()
