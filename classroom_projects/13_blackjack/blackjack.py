@@ -5,17 +5,18 @@ Author: badDoggy
 Date: 11/17/2026
 """
 
-#####################################
-
-
 # ##########  Imports  ##############
-import subprocess
 import os
+import subprocess
 import random
-from logo import logo
+
+# If 'logo.py' is missing, a default logo will be used.
+try:
+    from logo import logo
+except ImportError:
+    logo = "#############\nBlackjack\n#############"
 
 
-# #########  Functions  ##############
 def clear_screen():
     """Clear the terminal screen."""
     command = "cls" if os.name == "nt" else "clear"
@@ -127,8 +128,8 @@ cards = {
     "Q": 10,
     "K": 10,
 }
-# Initial set game_over to False
-game_over = False
+# Initial variable declarations
+dealer_hand, player_hand, game_over = initial_setup()
 
 
 while not game_over:
@@ -136,9 +137,6 @@ while not game_over:
     choice = ""
     # Clear the screen & Display the logo
     clear_screen()
-
-    # Deal the initial 2 cards
-    dealer_hand, player_hand, game_over = initial_setup()
 
     # Get the hand totals
     dealer_tot, dealer_bj, dealer_bust, dealer_text = card_totals(dealer_hand, "dealer")
@@ -232,6 +230,9 @@ while not game_over:
     if game_over and choice not in ("q", "quit"):
         again = input("\nPlay Again>  (Y/N) ").strip().lower()
         if again in ("y", "yes"):
+            # Initial variable declarations
+            # Deals the initial 2 cards
+            dealer_hand, player_hand, game_over = initial_setup()
             game_over = False
         else:
             break
