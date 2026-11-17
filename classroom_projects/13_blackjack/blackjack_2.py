@@ -21,9 +21,6 @@ def clear_screen():
 
 
 def initial_setup():
-    """Resets game data for initial start or replay and returns their initial values.
-    \nDeals the first 2 cards for each player"""
-
     dealer_hand = []
     player_hand = []
     game_over = False
