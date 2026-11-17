@@ -25,9 +25,6 @@ def clear_screen():
 
 
 def initial_setup():
-    """Resets game data for initial start or replay and returns their initial values.
-    \nDeals the first 2 cards for each player"""
-
     dealer_hand = []
     player_hand = []
     game_over = False
@@ -40,24 +37,11 @@ def initial_setup():
 
 
 def deal_card():
-    """Pulls a single random card from the deck.
-    \nReturns the card by dictionary "key" name.
-    \nMust assign this card to a player when calling the function.
-    \n  eg. player_hand.append(deal_card())"""
-
     card = random.choice(list(cards))
     return card
 
 
 def card_totals(hand, who):
-    """
-    Calculates the total for the current hand.
-    \nIf total is over 21 and you have an Ace, total -= 10.
-    \n  - If total over 21 and no Ace, return bust == true
-    \n\nChecks for Blackjack: returns True or False.
-    \n  - Blackjack value determined by only having two cards that equal 21.
-    \nreturns the hand total with Blackjack and Bust status.
-    """
     total = 0
     blackjack = False
     bust = False
@@ -90,10 +74,6 @@ def card_totals(hand, who):
 
 
 def display_cards(status):
-    """
-    Displays the cards using the global variables 'dealer_hand' and 'player_hand'.
-    If the status is "initial", Dealer's first card is hidden.
-    """
     if status == "initial":
         # Display the initial hands; dealer's first card is hidden as "??"
         print(f"Dealer Hand: ?  {dealer_hand[1]}")
@@ -128,8 +108,8 @@ cards = {
     "Q": 10,
     "K": 10,
 }
-# Initial variable declarations
-dealer_hand, player_hand, game_over = initial_setup()
+# Initial set game_over to False
+game_over = False
 
 
 while not game_over:
@@ -137,6 +117,9 @@ while not game_over:
     choice = ""
     # Clear the screen & Display the logo
     clear_screen()
+
+    # Deal the initial 2 cards
+    dealer_hand, player_hand, game_over = initial_setup()
 
     # Get the hand totals
     dealer_tot, dealer_bj, dealer_bust, dealer_text = card_totals(dealer_hand, "dealer")
@@ -230,9 +213,6 @@ while not game_over:
     if game_over and choice not in ("q", "quit"):
         again = input("\nPlay Again>  (Y/N) ").strip().lower()
         if again in ("y", "yes"):
-            # Initial variable declarations
-            # Deals the initial 2 cards
-            dealer_hand, player_hand, game_over = initial_setup()
             game_over = False
         else:
             break
