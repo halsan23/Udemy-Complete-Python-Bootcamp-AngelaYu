@@ -1,7 +1,11 @@
-#######################
-# Blackjack Card Game
-# badDoggy | 11/17/2026
-#######################
+"""
+Blackjack Card Game
+
+Author: badDoggy
+Date: 11/17/2026
+"""
+
+#####################################
 
 
 # ##########  Imports  ##############
@@ -13,7 +17,7 @@ from logo import logo
 
 # #########  Functions  ##############
 def clear_screen():
-    """Clears the screen and displays the logo art."""
+    """Clear the terminal screen."""
     command = "cls" if os.name == "nt" else "clear"
     subprocess.run(command, shell=True, check=False)
     print(logo)
@@ -226,7 +230,7 @@ while not game_over:
 
     # Play Again Loop
     if game_over and choice not in ("q", "quit"):
-        again = input("\nPlay Again>  (Y/N) ")
+        again = input("\nPlay Again>  (Y/N) ").strip().lower()
         if again in ("y", "yes"):
             game_over = False
         else:

@@ -1,6 +1,10 @@
-#####################################
-# Clear Screen Function
-# Created by - badDoggy | 11/07/2026
+"""
+Clear Screen
+
+Author: badDoggy
+Date: 11/17/2026
+"""
+
 #####################################
 
 
