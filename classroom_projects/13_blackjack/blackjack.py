@@ -1,6 +1,6 @@
 #######################
 # Blackjack Card Game
-# badDoggy | 11/17/26
+# badDoggy | 11/17/2026
 #######################
 
 
@@ -90,19 +90,19 @@ def display_cards(status):
     if the status is "initial", Dealer's first card is hidden.
     """
     if status == "initial":
-        # Display the initial hands
-        print(f"Dealer Hand: XX  {dealer_hand[-1]}")
-        print(f"Player Hand: {"  ".join(player_hand)}")
+        # Display the initial hands; dealer's first card is hidden as "??"
+        print(f"Dealer Hand: ?? {dealer_hand[-1]}")
+        print(f"Player Hand: {'  '.join(player_hand)}")
     else:
         # Display both hands
-        print(f"Dealer Hand: {"  ".join(dealer_hand)}")
-        print(f"Player Hand: {"  ".join(player_hand)}")
+        print(f"Dealer Hand: {'  '.join(dealer_hand)}")
+        print(f"Player Hand: {'  '.join(player_hand)}")
 
 
-def display_winner(winner):
+def display_winner(winner, dealer_total, player_total):
     """Displays the Winner"""
-    print(f"\nDealer has: {dealer_tot}")
-    print(f"Player has: {player_tot}")
+    print(f"\nDealer has: {dealer_total}")
+    print(f"Player has: {player_total}")
     print(f"\n- {winner} Wins -")
 
 
@@ -161,27 +161,27 @@ while not game_over:
             # Player Input: Hit, Stand, or Quit
             print(f"\nPlayer has : {player_tot}\n")
             choice = input("Would you like to H)it, S)tand, or Q)uit? ").lower()
-            # Player Quits
-            if choice == "q" or choice == "quit":
-                print("\n\n- Game Over -")
-                game_over = True
-                break
             # Player Hits another card
-            elif choice == "h" or choice == "hit":
+            if choice in ("h", "hit"):
                 player_hand.append(deal_card())
                 player_tot, player_bj, player_bust, player_text = card_totals(
                     player_hand, "player"
                 )
                 clear_screen()
-                if player_bust:
+                if not player_bust:
+                    display_cards("initial")
+                else:
                     display_cards("all")
                     print(f"\n{player_text}")
                     game_over = True
                     break
-                else:
-                    display_cards("initial")
             # Player Stands
-            elif choice == "s" or choice == "stand":
+            elif choice in ("s", "stand"):
+                break
+            # Player Quits
+            elif choice in ("q", "quit"):
+                print("\n\n- Game Over -")
+                game_over = True
                 break
             # Invalid Input (not h, s, q)
             else:
@@ -206,6 +206,8 @@ while not game_over:
                     dealer_tot, dealer_bj, dealer_bust, dealer_text = card_totals(
                         dealer_hand, "dealer"
                     )
+                    clear_screen()
+                    display_cards("all")
                     print(f"\nDealer draws: {dealer_hand[-1]}")
                     # Pauses play so player can see the new card
                     input("\nPress any key to continue...")
@@ -213,9 +215,9 @@ while not game_over:
                 else:
                     # check for tie or winner
                     if dealer_tot > player_tot:
-                        display_winner("Dealer")
+                        display_winner("Dealer", dealer_tot, player_tot)
                     elif dealer_tot < player_tot:
-                        display_winner("Player")
+                        display_winner("Player", dealer_tot, player_tot)
                     else:
                         print(f"\nGame ends in a tie at {dealer_tot}")
 
@@ -223,9 +225,9 @@ while not game_over:
                     break
 
     # Play Again Loop
-    if game_over and (choice != "q" and choice != "quit"):
+    if game_over and choice not in ("q", "quit"):
         again = input("\nPlay Again>  (Y/N) ")
-        if again == "y" or again == "yes":
+        if again in ("y", "yes"):
             game_over = False
         else:
             break
