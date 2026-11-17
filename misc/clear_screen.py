@@ -12,7 +12,7 @@ import os
 # #########  Functions  ##############
 # Clear Screen
 def clear_screen():
-    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
+    """Clear the terminal screen."""
     command = "cls" if os.name == "nt" else "clear"
     subprocess.run(command, shell=True, check=False)
 
