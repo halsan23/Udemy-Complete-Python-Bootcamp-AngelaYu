@@ -86,12 +86,12 @@ def card_totals(hand, who):
 
 def display_cards(status):
     """
-    Displays the cards.
-    if the status is "initial", Dealer's first card is hidden.
+    Displays the cards using the global variables 'dealer_hand' and 'player_hand'.
+    If the status is "initial", Dealer's first card is hidden.
     """
     if status == "initial":
         # Display the initial hands; dealer's first card is hidden as "??"
-        print(f"Dealer Hand: ?? {dealer_hand[-1]}")
+        print(f"Dealer Hand: ?? {dealer_hand[1]}")
         print(f"Player Hand: {'  '.join(player_hand)}")
     else:
         # Display both hands
@@ -195,13 +195,8 @@ while not game_over:
             while True:
                 clear_screen()
                 display_cards("all")
-                # Dealer Bust
-                if dealer_bust:
-                    print(f"\n{dealer_text}")
-                    game_over = True
-                    break
                 # Dealer takes a card
-                elif dealer_tot < 17:
+                if dealer_tot < 17:
                     dealer_hand.append(deal_card())
                     dealer_tot, dealer_bj, dealer_bust, dealer_text = card_totals(
                         dealer_hand, "dealer"
@@ -211,6 +206,11 @@ while not game_over:
                     print(f"\nDealer draws: {dealer_hand[-1]}")
                     # Pauses play so player can see the new card
                     input("\nPress any key to continue...")
+                # Dealer Bust
+                elif dealer_bust:
+                    print(f"\n{dealer_text}")
+                    game_over = True
+                    break
 
                 else:
                     # check for tie or winner
@@ -230,7 +230,6 @@ while not game_over:
         if again in ("y", "yes"):
             game_over = False
         else:
+            # End the app
+            print("\n\n\n--  End of Line --\n")
             break
-
-# End the app
-print("\n\n\n--  End of Line --\n")
