@@ -1,6 +1,6 @@
 #####################################
 # Clear Screen Function
-# Created by - badDoggy | 11/07/26
+# Created by - badDoggy | 11/07/2026
 #####################################
 
 

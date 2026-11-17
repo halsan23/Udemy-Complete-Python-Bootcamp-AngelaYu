@@ -1,6 +1,6 @@
 ######################################
 # App Name
-# Created by - badDoggy | D A T E
+# Created by - badDoggy | mm/dd/yyyy
 ######################################
 
 
