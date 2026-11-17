@@ -95,7 +95,7 @@ def display_cards(status):
     """
     if status == "initial":
         # Display the initial hands; dealer's first card is hidden as "??"
-        print(f"Dealer Hand: ?? {dealer_hand[1]}")
+        print(f"Dealer Hand: ?  {dealer_hand[1]}")
         print(f"Player Hand: {'  '.join(player_hand)}")
     else:
         # Display both hands
@@ -234,6 +234,7 @@ while not game_over:
         if again in ("y", "yes"):
             game_over = False
         else:
-            # End the app
-            print("\n\n\n--  End of Line --\n")
             break
+
+# End the app
+print("\n\n\n--  End of Line --\n")
