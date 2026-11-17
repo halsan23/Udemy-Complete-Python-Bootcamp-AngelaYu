@@ -21,7 +21,8 @@ def clear_screen():
 
 
 def initial_setup():
-    """Resets game data for initial start or replay and returns their initial values."""
+    """Resets game data for initial start or replay and returns their initial values.
+    \nDeals the first 2 cards for each player"""
 
     dealer_hand = []
     player_hand = []
@@ -74,17 +75,34 @@ def card_totals(hand):
     return total, blackjack, bust
 
 
-def is_blackjack(turn):
+def is_bust(turn):
     """
-    If there is a Blackjack, display all the cards and who the winner is.
+    If the current player is bust, display who the winner is.
     """
-    print(f"Dealer Hand: {"  ".join(dealer_hand)}")
+    if turn == "dealer":
+        return f"\nDealer is Bust!!  -  Dealer Wins!"
+    else:
+        return f"\nPlayer is Bust!!  -  Player Wins!"
+
+
+def display_initial():
+    """
+    Displays the hands.
+    \nDealers first card is hidden.
+    """
+    # Display the initial hands
+    print(f"Dealer Hand: XX  {dealer_hand[-1]}")
     print(f"Player Hand: {"  ".join(player_hand)}")
 
-    if turn == "dealer":
-        return f"\nDealer Has Blackjack!!  -  Dealer Wins!"
-    else:
-        return f"\nPlayer Has Blackjack!!  -  Player Wins!"
+
+def display_all():
+    """
+    Displays the hands.
+    \nAll cards are shown.
+    """
+    # Display the initial hands
+    print(f"Dealer Hand: {"  ".join(dealer_hand)}")
+    print(f"Player Hand: {"  ".join(player_hand)}")
 
 
 ###########  Variables  ##############
@@ -107,6 +125,7 @@ game_over = False
 
 
 while not game_over:
+    choice = ""
     # Clear the screen & Display the logo
     clear_screen()
 
@@ -117,27 +136,56 @@ while not game_over:
     dealer_tot, dealer_bj, dealer_bust = card_totals("dealer")
     player_tot, player_bj, player_bust = card_totals("player")
 
+    # Get initial Display (hides dealer's first card)
+    display_initial()
+
     # check for Blackjack
     if dealer_bj:
-        print(is_blackjack("dealer"))
+        clear_screen()
+        display_all()
+        print("\nDealer Has Blackjack!!  -  Dealer Wins!")
         game_over = True
     elif player_bj:
-        print(is_blackjack("player"))
+        clear_screen()
+        display_all()
+        print("\nPlayer Has Blackjack!!  -  Player Wins!")
         game_over = True
     else:
-        # Display the initial hands
-        print(f"Dealer Hand: XX  {dealer_hand[-1]}")
-        print(f"Player Hand: {"  ".join(player_hand)}")
-
-        # debug code
-        print(f"\nDealer: {dealer_tot}  |  Blackjack: {dealer_bj}")
-        print(f"Player: {player_tot}  |  Blackjack: {player_bj}\n")
-
-        # Player's Turn
         game_over = True
 
+    # Player's Turn
+    # while True:
+    #     print(f"\nPlayer has : {player_tot}\n")
+    #     choice = input("Would you like to H)it, S)tand, or Q)uit? ").lower()
+    #     if choice == "q" or choice == "quit":
+    #         print("\n\nPlayer quit   - Game Over -")
+    #         game_over = True
+    #         break
+    #     elif choice == "s" or choice == "stand":
+    #         break
+    #     elif choice == "h" or choice == "hit":
+    #         player_hand.append(deal_card())
+    #         player_tot, player_bj, player_bust = card_totals("player")
+    #         clear_screen()
+    #         display_initial()
+
+    #         if player_bust:
+    #             print("\nPlayer is Bust!!  -  Dealer Wins!")
+    #             game_over = True
+    #             break
+    #         else:
+    #             clear_screen()
+
+    #     else:
+    #         print("Invalid Input!!")
+
+    # Dealer's Turn
+    # debug code
+    # print(f"\nDealer: {dealer_tot}  |  Blackjack: {dealer_bj}")
+    # choice = input("Dealer's Turn - press any key to continue: ")
+
     # Play Again Loop
-    if game_over:
+    if game_over and (choice != "q" and choice != "quit"):
         again = input("\nPlay Again>  (Y/N) ")
         if again == "y" or again == "yes":
             game_over = False
@@ -145,4 +193,4 @@ while not game_over:
             break
 
 # End the app
-print("\n\n--  End of Line --\n")
+print("\n\n\n--  End of Line --\n")
