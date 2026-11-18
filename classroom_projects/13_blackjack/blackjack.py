@@ -15,7 +15,7 @@ import time
 try:
     from logo import logo
 except ImportError:
-    logo = "#############\nBlackjack\n#############"
+    logo = "#############\n  Blackjack\n#############"
 
 
 def clear_screen():
