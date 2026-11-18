@@ -25,49 +25,27 @@ def clear_screen():
     subprocess.run(command, shell=True, check=False)
     print(logo)
 
-
-def initial_setup():
-    """Sets initial variables\n
-    Deals the first hand."""
-    game_over = False
-
-    dealer_hand = []
-    player_hand = []
-
-    for _ in range(2):
-        dealer_hand.append(deal_card())
-        player_hand.append(deal_card())
-
-    return dealer_hand, player_hand, game_over
-
-
-def deal_card():
-    """Deals a single card from the deck to the player that called the function.
-    \nFormat to call function is:
-    \n  (player_hand or dealer_hand).append(deal_card())"""
-    card = random.choice(list(cards))
-    return card
-
-
-def card_totals(hand, who):
-    """
-    Calculates the hand totals.
-    \nChecks if current player has Blackjack or is Bust.
-    \n  Builds a text string for output display if the current player is Blackjack or Bust.
-    \nCalculates if an Ace should be worth 1 or 11.
-    """
-    total = 0
-    blackjack = False
-    bust = False
-    text = ""
-
-    if who == "player":
-        turn = "Player"
-        not_turn = "Dealer"
+def deal_cards(turn):
+    '''
+    Deals the cards.
+    \nIf turn is "initial, deals both hands the first 2 cards each
+    \n otherwise, deals 1 card only, to dealer or player
+    '''
+    if turn == "initial":
+        for _ in range(2):
+            dealer_hand.append(random.choice(list(cards)))
+            player_hand.append(random.choice(list(cards)))
+        return dealer_hand, player_hand
     else:
-        turn = "Dealer"
-        not_turn = "Player"
+        card = random.choice(list(cards))
+        return card
 
+def hand_total(hand):
+    '''
+    Calculates the hand total
+    \nReturns the total value
+    '''
+    total = 0
     ace_count = 0
     for card in hand:
         total += cards[card]
@@ -77,21 +55,46 @@ def card_totals(hand, who):
         total -= 10
         ace_count -= 1
 
+    return total
+
+def is_bj(turn, hand, total):
+    '''
+    Checks if either player has a Blackjack.
+    \nWhen this function is called, it checks the dealer first,
+    \n  if both players have a Blackjack, the Dealer wins the tie.
+    '''
+    blackjack = False
+    text = ""
+
     if len(hand) == 2 and total == 21:
         blackjack = True
-        text = f"\n{turn} Has Blackjack!!  -  {turn} Wins!"
-    elif total > 21:
+        text = f"{turn} Has Blackjack!!  -  {turn} Wins!"
+
+    return blackjack, text
+
+def is_bust(turn, total):
+    '''
+    Checks if the current player is Bust
+    '''
+    bust = False
+    text = ""
+
+    if turn == "Player":
+        not_turn = "Dealer"
+    else:
+        not_turn = "Player"
+
+    if total > 21:
         bust = True
         text = f"\n{turn} is Bust!!  -  {not_turn} Wins!"
 
-    return total, blackjack, bust, text
-
+    return bust, text
 
 def display_cards(status, dealer, player):
-    """
-    Displays the current card hands.
-    \nIf the status is "initial", hides the dealers first card.
-    """
+    '''
+    Displays the hands for output.
+    \n if status == "initial", hides the dealer's first card.
+    '''
     if status == "initial":
         # Display the initial hands; dealer's first card is hidden as "??"
         print(f"Dealer Hand: ?  {dealer[1]}")
@@ -101,13 +104,23 @@ def display_cards(status, dealer, player):
         print(f"Dealer Hand: {'  '.join(dealer)}")
         print(f"Player Hand: {'  '.join(player)}")
 
+def display_winner(dealer_tot, player_tot):
+    '''
+    Determines if the game is a tie, or if there is a winner.
+    \nDisplays the results
+    '''
+    # check for tie or winner
+    if dealer_tot == player_tot:
+        print(f"\nGame ends in a tie at {dealer_tot}")
+    else:
+        if dealer_tot > player_tot:
+            winner = "Dealer"
+        else:
+            winner = "Player"
 
-def display_winner(winner, dealer_total, player_total):
-    """Displays the hand totals.
-    \nDisplays the Winner"""
-    print(f"\nDealer has: {dealer_total}")
-    print(f"Player has: {player_total}")
-    print(f"\n- {winner} Wins -")
+        print(f"\nDealer has: {dealer_tot}")
+        print(f"Player has: {player_tot}")
+        print(f"\n- {winner} Wins -")
 
 
 ###########  Variables  ##############
@@ -127,48 +140,61 @@ cards = {
     "Q": 10,
     "K": 10,
 }
+# Initial Variables
+game_over = False
+dealer_hand = []
+player_hand = []
+choice = ""
 
-# Initial setup - Deal the first 2 cards
-dealer_hand, player_hand, game_over = initial_setup()
-
-
+# Play the game
 while not game_over:
-    # Set the initial player choices to an empty string
-    choice = ""
     # Clear the screen & Display the logo
     clear_screen()
 
-    # Get the hand totals
-    dealer_tot, dealer_bj, dealer_bust, dealer_text = card_totals(dealer_hand, "dealer")
-    player_tot, player_bj, player_bust, player_text = card_totals(player_hand, "player")
+    # Initial setup
+    # ---------------------------------------------
+    # Deal the first 2 cards
+    dealer_hand, player_hand = deal_cards("initial")
 
     # Get initial Display (hides dealer's first card)
     display_cards("initial", dealer_hand, player_hand)
 
+    # Get the hand totals
+    dealer_total = hand_total(dealer_hand)
+    player_total = hand_total(player_hand)
+
     # check for Blackjack
-    if dealer_bj:
+    # have to check dealer first : if they both have bj, dealer wins
+    dealer_bj, dealer_text = is_bj("Dealer", dealer_hand, dealer_total)
+    player_bj, player_text = is_bj("Player", player_hand, player_total)
+    if dealer_bj or player_bj:
         clear_screen()
         display_cards("all", dealer_hand, player_hand)
-        print(f"\n{dealer_text}")
-        game_over = True
-    elif player_bj:
-        clear_screen()
-        display_cards("all", dealer_hand, player_hand)
-        print(f"\n{player_text}")
+        if dealer_bj:
+            print(f"\n{dealer_text}")
+            if player_bj:
+                print("Player also has a Blackjack but the Dealer wins the tie.")
+            else:
+                print(f"Player has: {player_total}")
+        else:
+            print(f"\nDealer has: {dealer_total}")
+            print(f"{player_text}")
         game_over = True
 
+    # Player's Turn
     else:
-        # Player's Turn
         while True:
             # Player Input: Hit, Stand, or Quit
-            print(f"\nPlayer has : {player_tot}\n")
+            print(f"\nPlayer has : {player_total}\n")
             choice = input("Would you like to H)it, S)tand, or Q)uit? ").lower()
+
             # Player Hits another card
             if choice in ("h", "hit"):
-                player_hand.append(deal_card())
-                player_tot, player_bj, player_bust, player_text = card_totals(
-                    player_hand, "player"
-                )
+                player_hand.append(deal_cards("player"))
+                player_total = hand_total(player_hand)
+
+                # check if player is bust
+                player_bust, player_text = is_bust("Player", player_total)
                 clear_screen()
                 if not player_bust:
                     display_cards("initial", dealer_hand, player_hand)
@@ -177,14 +203,17 @@ while not game_over:
                     print(f"\n{player_text}")
                     game_over = True
                     break
+
             # Player Stands
             elif choice in ("s", "stand"):
                 break
+
             # Player Quits
             elif choice in ("q", "quit"):
                 print("\n\n- Game Over -")
                 game_over = True
                 break
+
             # Invalid Input (not h, s, q)
             else:
                 print("\nInvalid Input!!")
@@ -195,39 +224,40 @@ while not game_over:
         # Dealer's Turn
         if not game_over:
             while True:
+                # Clear the screen to display ALL of the cards
                 clear_screen()
                 display_cards("all", dealer_hand, player_hand)
+
                 # Dealer takes a card
-                if dealer_tot < 17:
+                if dealer_total < 17:
                     # deal a new card
-                    dealer_hand.append(deal_card())
+                    dealer_hand.append(deal_cards("dealer"))
+
                     # get total and status
-                    dealer_tot, dealer_bj, dealer_bust, dealer_text = card_totals(
-                        dealer_hand, "dealer"
-                    )
+                    dealer_total = hand_total(dealer_hand)
+
                     # redraw the screen
                     clear_screen()
                     display_cards("all", dealer_hand, player_hand)
+
+                    # Display output
                     print(f"\nDealer draws: {dealer_hand[-1]}")
-                    print(f"Dealer has: {dealer_tot}")
-                    if dealer_tot < 22:
-                        # Pauses play so player can see the new card
-                        time.sleep(3)
+                    print(f"Dealer has: {dealer_total}")
+
+                    # Pauses play so player can see the new card
+                    time.sleep(2)
+
                 # Dealer Bust
-                elif dealer_bust:
+                elif dealer_total > 21:
+                    dealer_bust, dealer_text = is_bust("Dealer", dealer_total)
+                    print(f"Dealer has: {dealer_total}")
                     print(f"\n{dealer_text}")
                     game_over = True
                     break
 
+                # check for tie or winner
                 else:
-                    # check for tie or winner
-                    if dealer_tot > player_tot:
-                        display_winner("Dealer", dealer_tot, player_tot)
-                    elif dealer_tot < player_tot:
-                        display_winner("Player", dealer_tot, player_tot)
-                    else:
-                        print(f"\nGame ends in a tie at {dealer_tot}")
-
+                    display_winner(dealer_total, player_total)
                     game_over = True
                     break
 
@@ -236,7 +266,10 @@ while not game_over:
         again = input("\nPlay Again>  (Y/N) ").strip().lower()
         if again in ("y", "yes"):
             # Reset Variables and Deal the first 2 cards
-            dealer_hand, player_hand, game_over = initial_setup()
+            game_over = False
+            dealer_hand = []
+            player_hand = []
+            choice = ""
         else:
             break
 
