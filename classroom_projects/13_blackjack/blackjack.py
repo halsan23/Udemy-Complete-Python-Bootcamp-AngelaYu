@@ -15,7 +15,7 @@ import time
 try:
     from logo import logo
 except ImportError:
-    logo = "#############\n  Blackjack\n#############"
+    logo = "###############\n" "#  Blackjack  #\n" "###############"
 
 
 def clear_screen():
@@ -36,7 +36,6 @@ def deal_cards(turn):
         for _ in range(2):
             dealer_hand.append(random.choice(list(cards)))
             player_hand.append(random.choice(list(cards)))
-        return dealer_hand, player_hand
     else:
         card = random.choice(list(cards))
         return card
@@ -185,8 +184,8 @@ while not game_over:
             print(f"{player_text}")
         game_over = True
 
-    # Player's Turn
     else:
+        # Player's Turn
         while True:
             # Player Input: Hit, Stand, or Quit
             print(f"\nPlayer has : {player_total}\n")
@@ -270,11 +269,11 @@ while not game_over:
         again = input("\nPlay Again>  (Y/N) ").strip().lower()
         if again in ("y", "yes"):
             # Reset Variables and Deal the first 2 cards
+            # Reset Variables and Deal the first 2 cards
             game_over = False
-            dealer_hand = []
-            player_hand = []
+            dealer_hand.clear()
+            player_hand.clear()
             choice = ""
-        else:
             break
 
 
