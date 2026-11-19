@@ -2,7 +2,7 @@
 Blackjack Card Game
 
 Author: badDoggy
-Date: 11/18/2026
+Date: 11/19/2026
 """
 
 # ##########  Imports  ##############
@@ -15,7 +15,7 @@ import time
 try:
     from logo import logo
 except ImportError:
-    logo = "#############\n  Blackjack\n#############"
+    logo = "###############\n" "#  Blackjack  #\n" "###############"
 
 
 def clear_screen():
@@ -25,26 +25,27 @@ def clear_screen():
     subprocess.run(command, shell=True, check=False)
     print(logo)
 
+
 def deal_cards(turn):
-    '''
+    """
     Deals the cards.
     \nIf turn is "initial, deals both hands the first 2 cards each
     \n otherwise, deals 1 card only, to dealer or player
-    '''
+    """
     if turn == "initial":
         for _ in range(2):
             dealer_hand.append(random.choice(list(cards)))
             player_hand.append(random.choice(list(cards)))
-        return dealer_hand, player_hand
     else:
         card = random.choice(list(cards))
         return card
 
+
 def hand_total(hand):
-    '''
+    """
     Calculates the hand total
     \nReturns the total value
-    '''
+    """
     total = 0
     ace_count = 0
     for card in hand:
@@ -57,12 +58,13 @@ def hand_total(hand):
 
     return total
 
+
 def is_bj(turn, hand, total):
-    '''
+    """
     Checks if either player has a Blackjack.
     \nWhen this function is called, it checks the dealer first,
     \n  if both players have a Blackjack, the Dealer wins the tie.
-    '''
+    """
     blackjack = False
     text = ""
 
@@ -72,10 +74,11 @@ def is_bj(turn, hand, total):
 
     return blackjack, text
 
+
 def is_bust(turn, total):
-    '''
+    """
     Checks if the current player is Bust
-    '''
+    """
     bust = False
     text = ""
 
@@ -90,11 +93,12 @@ def is_bust(turn, total):
 
     return bust, text
 
+
 def display_cards(status, dealer, player):
-    '''
+    """
     Displays the hands for output.
     \n if status == "initial", hides the dealer's first card.
-    '''
+    """
     if status == "initial":
         # Display the initial hands; dealer's first card is hidden as "??"
         print(f"Dealer Hand: ?  {dealer[1]}")
@@ -104,11 +108,12 @@ def display_cards(status, dealer, player):
         print(f"Dealer Hand: {'  '.join(dealer)}")
         print(f"Player Hand: {'  '.join(player)}")
 
+
 def display_winner(dealer_tot, player_tot):
-    '''
+    """
     Determines if the game is a tie, or if there is a winner.
     \nDisplays the results
-    '''
+    """
     # check for tie or winner
     if dealer_tot == player_tot:
         print(f"\nGame ends in a tie at {dealer_tot}")
@@ -151,10 +156,8 @@ while not game_over:
     # Clear the screen & Display the logo
     clear_screen()
 
-    # Initial setup
-    # ---------------------------------------------
-    # Deal the first 2 cards
-    dealer_hand, player_hand = deal_cards("initial")
+    # Initial setup - Deal the first 2 cards
+    deal_cards("initial")
 
     # Get initial Display (hides dealer's first card)
     display_cards("initial", dealer_hand, player_hand)
@@ -181,8 +184,8 @@ while not game_over:
             print(f"{player_text}")
         game_over = True
 
-    # Player's Turn
     else:
+        # Player's Turn
         while True:
             # Player Input: Hit, Stand, or Quit
             print(f"\nPlayer has : {player_total}\n")
@@ -267,11 +270,12 @@ while not game_over:
         if again in ("y", "yes"):
             # Reset Variables and Deal the first 2 cards
             game_over = False
-            dealer_hand = []
-            player_hand = []
+            dealer_hand.clear()
+            player_hand.clear()
             choice = ""
         else:
             break
+
 
 # End the app
 print("\n\n\n--  End of Line --\n")
