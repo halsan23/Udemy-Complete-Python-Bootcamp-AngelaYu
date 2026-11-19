@@ -269,11 +269,11 @@ while not game_over:
         again = input("\nPlay Again>  (Y/N) ").strip().lower()
         if again in ("y", "yes"):
             # Reset Variables and Deal the first 2 cards
-            # Reset Variables and Deal the first 2 cards
             game_over = False
             dealer_hand.clear()
             player_hand.clear()
             choice = ""
+        else:
             break
 
 
