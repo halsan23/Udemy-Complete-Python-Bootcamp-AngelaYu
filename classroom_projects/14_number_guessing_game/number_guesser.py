@@ -42,27 +42,47 @@ def clear_screen():
     print(LOGO)
 
 
-def win_check(guess, num):
+def play_mode(mode, turns_left):
+    clear_screen()
+
+    if mode == "E":
+        mode = "Easy"
+    elif mode == "M":
+        mode = "Medium"
+    elif mode == "H":
+        mode = "Hard"
+
+    return f"OK, {mode} Mode: You have {turns_left} guesses.\n"
+
+
+def win_check(guess, rand_num, turns_left):
+    # print(f"Guess: {guess}")
+    # print(f"You get {turns} turns.")
+    # print(f"The random number: {rand_num}")
+
     win = ""
     text = ""
-    if guess == num:
+
+    if guess == rand_num:
         win = True
-        text = f"You Guessed it. My number is {num}"
+        text = f"You Guessed it. My number is {rand_num}"
 
-    return win, text
+    elif guess > random_num:
+        win = False
+        text = "You're too high."
+        turns_left -= 1
 
+    else:
+        win = False
+        text = "You're too Low."
+        turns_left -= 1
 
-def play_mode(difficult, guess):
-    clear_screen()
-    print(f"OK, {difficult} Mode: You get {guess} guesses.\n")
+    return win, text, turns_left
 
 
 # #########  Variables  ##############
-number = random.choice(range(1, 101))
 game_over = False
 choice = ""
-difficulty = ""
-guesses = 0
 
 
 # Run the App
@@ -70,60 +90,70 @@ while not game_over:
     # Clear Screen & Display Logo
     clear_screen()
 
-    # debug Code
-    print(number)
+    # user selects difficulty mode
+    valid_inputs = ["E", "Easy", "M", "Medium", "H", "Hard", "Q", "Quit"]
+    output = {"E": 10, "Easy": 10, "M": 7, "Medium": 7, "H": 5, "Hard": 5}
 
-    # Input for Difficulty Level
-    while True:
-        print("Choose difficulty level:")
-        print(
-            "\n  E)asy     10    Guesses\n  M)edium    7    Guesses\n  H)ard      5    Guesses\n  Q)uit\n"
-        )
-        choice = input("Your Choice? ").lower()
-        # Quit Game
-        if choice in ("q", "quit"):
+    while choice not in valid_inputs:
+        # display input choices
+        print("Choose difficulty level:\n")
+        print("  E)asy    (10 Guesses)")
+        print("  M)edium   (7 Guesses)")
+        print("  H)ard     (5 Guesses)")
+        print("  Q)uit Game\n")
+
+        # input user choice
+        choice = input("Your choice? ").capitalize()
+
+        # user chooses quit game
+        if choice in ("Q", "Quit"):
             game_over = True
             break
-        # Select Easy Game
-        elif choice in ("e", "easy"):
-            difficulty = "Easy"
-            guesses = 10
-            play_mode(difficulty, guesses)
-            break
-        # Select Medium Game
-        elif choice in ("m", "medium"):
-            difficulty = "Medium"
-            guesses = 7
-            play_mode(difficulty, guesses)
-            break
-        # Select Hard Game
-        elif choice in ("h", "hard"):
-            difficulty = "Hard"
-            guesses = 5
-            play_mode(difficulty, guesses)
-            break
-        # Invalid Input Display
-        else:
-            input("\nInvalid Input!!   Press any key to continue...")
+
+        # invalid inputs
+        elif choice not in valid_inputs:
+            input("\nInvalid Choice!!  press any key to continue ...")
             clear_screen()
 
     # Input for number guess
-    while True:
-        choice = ""
-        try:
-            choice = int(input("What is my number? "))
-            if choice not in range(1, 101):
-                print("\nInvalid Number Input!!   Must be between 1 and 100")
-                input("Press any key to continue...")
-                play_mode(difficulty, guesses)
-            else:
-                break
-        except ValueError:
-            print("\nInvalid Input!!   Must be a number between 1 and 100")
-            input("Press any key to continue...")
-            play_mode(difficulty, guesses)
+    if choice not in ("Q", "Quit"):
+        print(play_mode(choice, output[choice]))
+        number_guess = 0
+        random_num = random.choice(range(1, 101))
 
-    # Check user's input: Correct/Too High/Too Low
+        while number_guess not in range(1, 101):
+            clear_screen()
+            print(play_mode(choice, output[choice]))
+
+            # DEBUG CODE ############################################
+            print(f"Random Number: {random_num}\n")
+            # DEBUG CODE ############################################
+
+            number_guess = input("Q)uit, or Guess my number? ").capitalize()
+            if number_guess in ("Q", "Quit"):
+                game_over = True
+                break
+            else:
+                try:
+                    this_guess = int(number_guess)
+                    if this_guess not in range(1, 101):
+                        print("\nInvalid Number Input!!   Must be between 1 and 100")
+                        input("Press any key to continue...")
+                    else:
+                        # Check user's input: Correct/Too High/Too Low
+                        win_game, win_text, turns = win_check(
+                            this_guess, random_num, output[choice]
+                        )
+                        print(f"\nWin Game: {win_game}")
+                        print(f"Winning Text: {win_text}")
+                        print(f"# of turns left: {turns}")
+                        break
+
+                        # need code for if you won or if we need another round
+
+                except ValueError:
+                    print("\nInvalid Input!!   Must be a number between 1 and 100")
+                    input("Press any key to continue...")
 
     # debug Code
     game_over = True
