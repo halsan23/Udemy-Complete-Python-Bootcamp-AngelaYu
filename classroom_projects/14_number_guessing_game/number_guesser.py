@@ -42,7 +42,7 @@ def clear_screen():
     print(LOGO)
 
 
-def play_mode(mode, turns_left):
+def play_mode(mode, turns):
     clear_screen()
 
     if mode == "E":
@@ -52,30 +52,30 @@ def play_mode(mode, turns_left):
     elif mode == "H":
         mode = "Hard"
 
-    return f"OK, {mode} Mode: You have {turns_left} guesses.\n"
+    return f"OK, {mode} Mode: You get {turns} guesses.\n"
 
 
 def win_check(guess, rand_num, turns_left):
-    # print(f"Guess: {guess}")
-    # print(f"You get {turns} turns.")
-    # print(f"The random number: {rand_num}")
-
     win = ""
     text = ""
+    turns_left -= 1
 
-    if guess == rand_num:
+    # if out of guesses
+    if turns_left == 0:
+        win = False
+        text = f"\n\nYou ran out of guesses. My number is {rand_num}"
+    # if guess is correct
+    elif guess == rand_num:
         win = True
-        text = f"You Guessed it. My number is {rand_num}"
-
+        text = f"\n\nYou Guessed it. My number is {rand_num}"
+    # if guess too high
     elif guess > random_num:
         win = False
-        text = "You're too high."
-        turns_left -= 1
-
+        text = "\nYou're too high."
+    # if guess too low
     else:
         win = False
-        text = "You're too Low."
-        turns_left -= 1
+        text = "\nYou're too Low."
 
     return win, text, turns_left
 
@@ -118,10 +118,10 @@ while not game_over:
     # Input for number guess
     if choice not in ("Q", "Quit"):
         print(play_mode(choice, output[choice]))
-        number_guess = 0
         random_num = random.choice(range(1, 101))
+        rounds = output[choice]
 
-        while number_guess not in range(1, 101):
+        while rounds > 0:
             clear_screen()
             print(play_mode(choice, output[choice]))
 
@@ -132,6 +132,7 @@ while not game_over:
             number_guess = input("Q)uit, or Guess my number? ").capitalize()
             if number_guess in ("Q", "Quit"):
                 game_over = True
+                choice = "Q"
                 break
             else:
                 try:
@@ -141,22 +142,38 @@ while not game_over:
                         input("Press any key to continue...")
                     else:
                         # Check user's input: Correct/Too High/Too Low
-                        win_game, win_text, turns = win_check(
-                            this_guess, random_num, output[choice]
+                        win_game, win_text, rounds = win_check(
+                            this_guess, random_num, rounds
                         )
-                        print(f"\nWin Game: {win_game}")
-                        print(f"Winning Text: {win_text}")
-                        print(f"# of turns left: {turns}")
-                        break
-
-                        # need code for if you won or if we need another round
+                        if win_game:
+                            print(win_text)
+                            game_over = True
+                            rounds = 0
+                        else:
+                            if rounds == 0:
+                                print(win_text)
+                                game_over = True
+                            else:
+                                print(win_text)
+                                if rounds > 1:
+                                    print(f"You have {rounds} guesses left...")
+                                else:
+                                    print(f"You have {rounds} guess left...")
+                                input("\npress any key to continue...")
 
                 except ValueError:
                     print("\nInvalid Input!!   Must be a number between 1 and 100")
                     input("Press any key to continue...")
 
-    # debug Code
-    game_over = True
+    # Play Again Prompt
+    if game_over and choice not in ("Q", "Quit"):
+        again = input("\n\nPlay Again>  (Y/N) ").strip().lower()
+        if again in ("y", "yes"):
+            # Reset Variables and Deal the first 2 cards
+            game_over = False
+            choice = ""
+        else:
+            break
 
 
 # End the app
