@@ -65,7 +65,7 @@ while not end_app:
                 # Check if input is a leap year
                 print(is_leap_year(year_to_check))
                 break
-            except:
+            except TypeError:
                 print("\nINVALID INPUT!  Input must be a 4 digit year!")
                 input("\nPress any key to continue..")
                 clear_screen()
