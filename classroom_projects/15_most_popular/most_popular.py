@@ -23,9 +23,7 @@ clear_screen()
 
 
 for idx, item in enumerate(data):
-    description = f"{item['name']} is a {item['description']} from {item['country']}."
-    print()
-    print(description)
+    print(f"{item['name']} is a {item['description']} from {item['country']}.\n")
 
 
 # End the app
