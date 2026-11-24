@@ -32,9 +32,4 @@ logo = """
  `'    `-' |-' `-' `' `-^ '
            |
            '
-In this game I give you two choices and you
-pick the one that you thinks is most popular.
-\nThe game continues until your guess is wrong,
-at which point the game is over and your final
-score is shown.
 """
