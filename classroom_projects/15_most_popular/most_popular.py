@@ -20,13 +20,13 @@ def clear_screen():
     command = "cls" if os.name == "nt" else "clear"
     subprocess.run(command, shell=True, check=False)
     print(logo)
-    # score = max(score, 0)
-    # print(f"Current Score: {score}\n\n")
 
 
 def get_next(item):
-    # get two random items from "data" for user to compare
-    # each new round, item_1 becomes item_2 and item_2 gets a new assignment
+    """
+    Receives one item and selects a new random item from "data" for comparison.
+    \nEach new round, item_1 becomes item_2 and item_2 gets a new assignment.
+    """
     item_1 = item
     while True:
         item_2 = random.choice(data)
@@ -42,35 +42,35 @@ def get_next(item):
     return item_1, item_2, most_pop
 
 
-def check_answer(item, item_2, most_pop):
-    if item["name"] == most_pop:
-        print("\n- Correct Guess -")
+def check_answer(user_choice, item_2, most_pop):
+    """
+    Check if user guess is correct
+    \nReturns True or False
+    """
+    if user_choice["name"] == most_pop:
         print(
-            f"- {item['name']} has {item['follower_count']} followers, and {item_2['name']} only has {item_2['follower_count']} -"
+            f"\nCorrect, {user_choice['name']} has {user_choice['follower_count']} followers, and {item_2['name']} only has {item_2['follower_count']} -"
         )
         return True
 
-    print("\n- Incorrect Guess -")
     print(
-        f"- {item['name']} has only {item['follower_count']} followers, and {item_2['name']} has {item_2['follower_count']} -"
+        f"\nIncorrect, {user_choice['name']} only has {user_choice['follower_count']} followers, and {item_2['name']} has {item_2['follower_count']} -"
     )
     return False
 
 
-def reset(score):
-    # clear the screen and get the two contestants
-    # also determines which is most popular and returns their name
+def screen_display(user_score, item_1, item_2):
+    """
+    Clears the screen, displays the current score, and shows the two choices.
+    """
     clear_screen()
-    choice = ""
     # Running display for current score
-    print(f"Your Current Score: {score}\n")
+    print(f"Your Current Score: {user_score}\n")
 
     # display the two contestants for the user choice
-    print(f"A) {item_a['name']}, {item_a['description']} from {item_a['country']}.\n")
+    print(f"A) {item_1['name']}, {item_1['description']} from {item_1['country']}.\n")
     print("   or\n")
-    print(f"B) {item_b['name']}, {item_b['description']} from {item_b['country']}.\n")
-
-    return choice
+    print(f"B) {item_2['name']}, {item_2['description']} from {item_2['country']}.\n")
 
 
 # #########  Variables  ##############
@@ -84,7 +84,8 @@ while correct:
     # get two items from "data" to compare and set "most popular"
     item_a, item_b, most_popular = get_next(item_b)
     # clear the screen, reset choice = '', display user choices
-    choice = reset(score)
+    choice = ""
+    screen_display(score, item_a, item_b)
 
     # input for users choice
     while choice not in ("a", "b", "q", "quit"):
@@ -98,7 +99,8 @@ while correct:
         elif choice not in ("a", "b"):
             print("\nInvalid Input!!  A, B, or Q)uit only!!")
             input("press any key to continue ...")
-            choice = reset(score)
+            choice = ""
+            screen_display(score, item_a, item_b)
 
     # Check user's guess
     if choice == "a":
@@ -111,7 +113,7 @@ while correct:
         score += 1
 
     else:
-        print("\n- Game Over -")
+        print(f"\nGame Over with a final score of {score}")
         correct = False
 
 
