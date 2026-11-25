@@ -9,6 +9,7 @@ Date: 11/25/2026
 import subprocess
 import os
 from ascii_art import logo
+from data import MENU, resources
 
 
 # #########  Functions  ##############
@@ -21,6 +22,7 @@ def clear_screen():
 
 
 clear_screen()
+print(f"\n{MENU},\n\n{resources}")
 
 
 # End the app
