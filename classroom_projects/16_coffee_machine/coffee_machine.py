@@ -2,7 +2,7 @@
 Coffee Machine Project
 
 Author: badDoggy
-Date: 11/25/2026
+Date: 11/26/2026
 """
 
 # ##########  Imports  ##############
@@ -85,7 +85,7 @@ def error():
 
 
 # #########  Variables  ##############
-options = ["Espresso", "Latte", "Cappuccino"]
+options = ["espresso", "latte", "cappuccino"]
 resource_items = ["water", "milk", "coffee", "money"]
 end_app = False
 
@@ -112,7 +112,8 @@ while not end_app:
     if choice in (1, 2, 3):
         select = options[choice - 1]
         if resources["money"] < MENU[select]["cost"]:
-            print("\nInsufficient Funds!  Please check the reports.")
+            print("\nInsufficient Resources!  Please check the reports.")
+            print("DISPLAY REQUIREMENTS FOR THE COFFEE SELECTED5" "")
         else:
             print(f"\nEnjoy the {select}.")
         choice = ""
