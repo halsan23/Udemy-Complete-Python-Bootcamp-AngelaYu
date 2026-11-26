@@ -113,7 +113,12 @@ while not end_app:
         select = options[choice - 1]
         if resources["money"] < MENU[select]["cost"]:
             print("\nInsufficient Resources!  Please check the reports.")
-            print("DISPLAY REQUIREMENTS FOR THE COFFEE SELECTED5" "")
+            print(f"{select.capitalize()} requires the following:")
+            print("------------------------------------------")
+            # print(f"Water\t {MENU[select]["ingredients"]["water"]}")
+            for item, data in MENU[select]["ingredients"].items():
+                print(f"{item.capitalize()}:\t{data}")
+            print(f"Cost:\t${MENU[select]["cost"]:.2f}")
         else:
             print(f"\nEnjoy the {select}.")
         choice = ""
