@@ -24,15 +24,13 @@ def clear_screen():
 
 def menu():
     """Displays the menu for the Coffee Machine choices"""
-    print("    Coffee   Menu")
-    print("----------------------------")
-    x = 1
-    for key in MENU:
-        print(f" {x}) {key.title()}")
-        x += 1
-    print(" 4) Print Report")
-    print(" 5) Turn Coffee Machine Off")
-    print("----------------------------")
+    print("       Coffee    Menu")
+    print("------------------------------")
+    for x, (item, details) in enumerate(MENU.items(), start=1):
+        print(f" {x}) {item.title()}\t\t${details['cost']:.2f}")
+    print(" 4) Print Report\t-----")
+    print(" 5) Turn Machine Off\t-----")
+    print("------------------------------")
 
 
 # #########  Variables  ##############
@@ -48,7 +46,7 @@ while not end_app:
         clear_screen()
         menu()
         try:
-            choice = int(input("Please make a selection: "))
+            choice = int(input(" Please make a selection: "))
 
             if not 1 <= choice <= 5:
                 print("\nInvalid Selection!!  Choose 1 to 5 only.")
@@ -70,11 +68,11 @@ while not end_app:
     # Display report for remaining resources
     elif choice == 4:
         clear_screen()
-        print("  Resource     Amount")
-        print("-----------------------")
+        print("  Current    Resources")
+        print("------------------------")
         for key, value in resources.items():
             print(f"   {key.capitalize()} \t{value}")
-        print("-----------------------")
+        print("------------------------")
         choice = ""
         input("Press any key to continue...")
 
