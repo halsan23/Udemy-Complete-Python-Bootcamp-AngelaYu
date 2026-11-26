@@ -33,7 +33,60 @@ def menu():
     print("------------------------------")
 
 
+def report(cash):
+    """
+    Display the current available machine resources
+    """
+    print("  Current    Resources")
+    print("------------------------")
+    print(f"1)   Water\t{resources["water"]}ml")
+    print(f"2)   Milk\t{resources["milk"]}ml")
+    print(f"3)   Coffee\t{resources["coffee"]}g")
+    print(f"4)   Money\t${cash:.2f}")
+    print("------------------------")
+
+
+def add_resources():
+    """Add resources to the Coffee Machine"""
+    clear_screen()
+    report(resources["money"])
+    choice = ""
+    print("5)  Return to Main Menu")
+    print("------------------------")
+    while choice not in (1, 2, 3, 4, 5):
+        try:
+            choice = int(input("Which resource would you like to add? "))
+            if choice == 5:
+                return
+            if 1 <= choice <= 5:
+                try:
+                    add_resource = int(
+                        input(
+                            f"\nHow much {resource_items[choice -1].capitalize()} would you like to add? "
+                        )
+                    )
+                    resources[resource_items[choice - 1]] += add_resource
+                    report(resources["money"])
+                except ValueError:
+                    error()
+                    add_resources()
+            else:
+                error()
+                add_resources()
+        except ValueError:
+            error()
+            add_resources()
+
+
+def error():
+    """Display for Invalid Input"""
+    print("\nInvalid Input!  Select 1 to 5 only!")
+    input("press any key to continue...\n")
+
+
 # #########  Variables  ##############
+options = ["Espresso", "Latte", "Cappuccino"]
+resource_items = ["water", "milk", "coffee", "money"]
 end_app = False
 
 # ########  Run the App  #############
@@ -46,42 +99,37 @@ while not end_app:
         clear_screen()
         menu()
         try:
-            choice = int(input(" Please make a selection: "))
-
+            choice = int(input("Please make a selection: "))
             if not 1 <= choice <= 5:
-                print("\nInvalid Selection!!  Choose 1 to 5 only.")
-                input("press any key to continue...")
+                error()
                 clear_screen()
                 choice = ""
-
         except ValueError:
-            print("\nInvalid Selection!!  Please use the number keys to make a choice.")
-            input("press any key to continue...")
+            error()
             clear_screen()
             choice = ""
 
     if choice in (1, 2, 3):
-        print(f"\nYou selected: {choice}")
+        select = options[choice - 1]
+        if resources["money"] < MENU[select]["cost"]:
+            print("\nInsufficient Funds!  Please check the reports.")
+        else:
+            print(f"\nEnjoy the {select}.")
         choice = ""
         input("press any key to continue...")
 
     # Display report for remaining resources
     elif choice == 4:
         clear_screen()
-        print("  Current    Resources")
-        print("------------------------")
-        for key, value in resources.items():
-            print(f"   {key.capitalize()} \t{value}")
-        print("------------------------")
-        choice = ""
-        input("Press any key to continue...")
+        report(resources["money"])
+        choice = input("A)dd Resources or R)eturn to Menu? ").lower()
+        if choice in ("a", "add"):
+            add_resources()
 
     # Turn off the coffee machine (end the app)
     else:
         end_app = True
         break
-
-print(f"\n{MENU},\n\n{resources}")
 
 
 # End the app
