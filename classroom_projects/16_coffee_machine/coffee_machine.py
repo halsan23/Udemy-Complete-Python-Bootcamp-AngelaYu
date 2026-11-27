@@ -28,8 +28,9 @@ def menu():
     print("------------------------------")
     for x, (item, details) in enumerate(MENU.items(), start=1):
         print(f" {x}) {item.title()}\t\t${details['cost']:.2f}")
-    print(" 4) Print Report\t-----")
-    print(" 5) Turn Machine Off\t-----")
+    print(" - - - - - - - - - - - - - - -")
+    print(" 4) Ingredients Report")
+    print(" 5) Turn Machine Off")
     print("------------------------------")
 
 
@@ -37,13 +38,13 @@ def report(cash):
     """
     Display the current available machine resources
     """
-    print("  Current    Resources")
-    print("------------------------")
-    print(f"1)   Water\t{resources["water"]}ml")
-    print(f"2)   Milk\t{resources["milk"]}ml")
-    print(f"3)   Coffee\t{resources["coffee"]}g")
-    print(f"4)   Money\t${cash:.2f}")
-    print("------------------------")
+    print(" Current   Ingredients")
+    print("-----------------------")
+    print(f" 1)  Water\t{resources["water"]}ml")
+    print(f" 2)  Milk\t{resources["milk"]}ml")
+    print(f" 3)  Coffee\t{resources["coffee"]}g")
+    print(f" 4)  Money\t${cash:.2f}")
+    print("-----------------------")
 
 
 def add_resources():
@@ -51,7 +52,7 @@ def add_resources():
     clear_screen()
     report(resources["money"])
     choice = ""
-    print("5)  Return to Main Menu")
+    print(" 5)  Return to Main Menu")
     print("------------------------")
     while choice not in (1, 2, 3, 4, 5):
         try:
@@ -59,13 +60,17 @@ def add_resources():
             if choice == 5:
                 return
             if 1 <= choice <= 5:
+                select = resource_items[choice - 1]
                 try:
                     add_resource = int(
                         input(
-                            f"\nHow much {resource_items[choice -1].capitalize()} would you like to add? "
+                            f"\nHow much {select.capitalize()} would you like to add? "
                         )
                     )
-                    resources[resource_items[choice - 1]] += add_resource
+                    # new_value = resources[select] + add_resource
+                    # resources.update({f"{resources[select]}": new_value})
+                    resources[select] = resources[select] + add_resource
+                    input(resources[select])
                     report(resources["money"])
                 except ValueError:
                     error()
@@ -76,6 +81,19 @@ def add_resources():
         except ValueError:
             error()
             add_resources()
+
+
+def insufficient_resources(coffee_item):
+    """Display for insufficient resources to produce the user selected coffee"""
+    print("\nInsufficient Resources!  Please check the reports.")
+    print(f"{coffee_item.capitalize()} requires the following:")
+    print("\n\tRequired\tOn Hand")
+    print("--------------------------------")
+    # print(f"Water\t {MENU[select]["ingredients"]["water"]}")
+    for item, data in MENU[coffee_item]["ingredients"].items():
+        print(f"{item.capitalize()}:\t  {data}\t\t{resources[item]}")
+    print(f"Cost:\t  ${MENU[coffee_item]["cost"]:.2f}\t\t${resources["money"]}")
+    print("--------------------------------")
 
 
 def error():
@@ -112,15 +130,9 @@ while not end_app:
     if choice in (1, 2, 3):
         select = options[choice - 1]
         if resources["money"] < MENU[select]["cost"]:
-            print("\nInsufficient Resources!  Please check the reports.")
-            print(f"{select.capitalize()} requires the following:")
-            print("------------------------------------------")
-            # print(f"Water\t {MENU[select]["ingredients"]["water"]}")
-            for item, data in MENU[select]["ingredients"].items():
-                print(f"{item.capitalize()}:\t{data}")
-            print(f"Cost:\t${MENU[select]["cost"]:.2f}")
+            insufficient_resources(select)
         else:
-            print(f"\nEnjoy the {select}.")
+            print(f"\nEnjoy your {select.capitalize()}.")
         choice = ""
         input("press any key to continue...")
 
