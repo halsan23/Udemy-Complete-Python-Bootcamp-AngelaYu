@@ -40,14 +40,14 @@ def report(cash):
     """
     print(" Current   Ingredients")
     print("-----------------------")
-    print(f" 1)  Water\t{resources["water"]}ml")
-    print(f" 2)  Milk\t{resources["milk"]}ml")
-    print(f" 3)  Coffee\t{resources["coffee"]}g")
+    print(f" 1)  Water\t{resources["water"]} ml")
+    print(f" 2)  Milk\t{resources["milk"]} ml")
+    print(f" 3)  Coffee\t{resources["coffee"]} g")
     print(f" 4)  Money\t${cash:.2f}")
     print("-----------------------")
 
 
-def add_resources():
+def add_ingredients():
     """Add resources to the Coffee Machine"""
     clear_screen()
     report(resources["money"])
@@ -58,7 +58,7 @@ def add_resources():
         try:
             choice = int(input("Which resource would you like to add? "))
             if choice == 5:
-                return
+                break
             if 1 <= choice <= 5:
                 select = resource_items[choice - 1]
                 try:
@@ -67,20 +67,25 @@ def add_resources():
                             f"\nHow much {select.capitalize()} would you like to add? "
                         )
                     )
-                    # new_value = resources[select] + add_resource
-                    # resources.update({f"{resources[select]}": new_value})
                     resources[select] = resources[select] + add_resource
-                    input(resources[select])
                     report(resources["money"])
                 except ValueError:
                     error()
-                    add_resources()
+                    add_ingredients()
             else:
                 error()
-                add_resources()
+                add_ingredients()
         except ValueError:
             error()
-            add_resources()
+            add_ingredients()
+
+
+def remove_ingredients(coffee):
+    """Removes ingredients from the DataBase for the coffee created"""
+    resources["water"] -= MENU[coffee]["ingredients"]["water"]
+    resources["milk"] -= MENU[coffee]["ingredients"]["milk"]
+    resources["coffee"] -= MENU[coffee]["ingredients"]["coffee"]
+    resources["money"] -= MENU[coffee]["cost"]
 
 
 def insufficient_resources(coffee_item):
@@ -132,6 +137,7 @@ while not end_app:
         if resources["money"] < MENU[select]["cost"]:
             insufficient_resources(select)
         else:
+            remove_ingredients(select)
             print(f"\nEnjoy your {select.capitalize()}.")
         choice = ""
         input("press any key to continue...")
@@ -142,7 +148,7 @@ while not end_app:
         report(resources["money"])
         choice = input("A)dd Resources or R)eturn to Menu? ").lower()
         if choice in ("a", "add"):
-            add_resources()
+            add_ingredients()
 
     # Turn off the coffee machine (end the app)
     else:
