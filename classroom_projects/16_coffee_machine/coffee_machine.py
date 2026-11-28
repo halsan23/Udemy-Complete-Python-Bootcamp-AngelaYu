@@ -112,10 +112,10 @@ while not end_app:
             choice = None
 
         # process user input
-        elif choice in (1, 2, 3):
+        elif choice in ("1", "2", "3"):
             # make sure there is enough ingredients
             low_ingredients = False
-            select = options[choice - 1]
+            select = options[int(choice) - 1]
             if resources["water"] < MENU[select]["ingredients"]["water"]:
                 low_ingredients = True
             elif resources["milk"] < MENU[select]["ingredients"]["milk"]:
@@ -133,31 +133,34 @@ while not end_app:
                 paid = None
                 while not paid:
                     paid = input(
-                        f"\nPlease insert ${MENU[select]["cost"]:.2f} for you hot cup of {select.capitalize()}: "
+                        f"\nC)ancel, or insert ${MENU[select]["cost"]:.2f} for a hot cup of {select.capitalize()}: "
                     )
-
-                    # check user enters correct amount - EXACT CHANGE ONLY!!
-                    try:
-                        if float(paid) == MENU[select]["cost"]:
-                            resources["money"] += float(paid)
-                        else:
-                            print("\nInvalid Amount:")
-                            input("press any key to continue...")
-                            paid = "pass"
-                            main_menu()
-                            break
-                    except ValueError:
-                        print("\nInsufficient funds for the coffee.")
-                        input("press any key to continue...")
-                        paid = "pass"
+                    if paid in ("c", "cancel"):
                         main_menu()
+                    else:
+                        # check user enters correct amount - EXACT CHANGE ONLY!!
+                        try:
+                            if float(paid) == MENU[select]["cost"]:
+                                resources["money"] += float(paid)
+                            else:
+                                print(
+                                    f"\nInvalid Amount: {select.capitalize()} costs ${MENU[select]["cost"]:.2f}"
+                                )
+                                input("press any key to continue...")
+                                paid = None
+                                main_menu()
+                        except ValueError:
+                            print("\nInvalid amount for the coffee.")
+                            input("press any key to continue...")
+                            paid = None
+                            main_menu()
 
-                # coffee paid for  -  dispense the coffee
-                if paid != "pass":
-                    remove_ingredients(select)
-                    print(f"\nEnjoy your {select.capitalize()}.")
-                    choice = None
-                    input("press any key to continue...")
+                        # coffee paid for  -  dispense the coffee
+                        if paid:
+                            remove_ingredients(select)
+                            print(f"\nEnjoy your {select.capitalize()}.")
+                            choice = None
+                            input("press any key to continue...")
 
         # Admin Menu
         else:
@@ -179,13 +182,12 @@ while not end_app:
 
             # an input of 5 will just reroute back to the
             # beginning and return to the Main Menu.
+            # No further processing needed.
 
             # Turn off Coffee Machine  - -  end app
             if choice == "6":
                 end_app = True
                 break
-
-    break
 
 
 # End the app
