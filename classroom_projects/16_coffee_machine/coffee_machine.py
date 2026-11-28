@@ -54,11 +54,13 @@ def add_ingredients(resource):
     """Add resources to the Coffee Machine"""
     while True:
         # clear_screen()
+        add_resource = input(
+            f'\nC)ancel or How much "{resource.capitalize()}" would you like to add? '
+        )
+        if add_resource.lower() in ("c", "cancel"):
+            break
         try:
-            add_resource = int(
-                input(f"\nHow much {resource.capitalize()} would you like to add? ")
-            )
-            resources[resource] += add_resource
+            resources[resource] += int(add_resource)
             break
         except ValueError:
             print("\nInvalid Input!  Numerical values only!")
