@@ -2,7 +2,7 @@
 Coffee Machine Project
 
 Author: badDoggy
-Date: 11/27/2026
+Date: 11/28/2026
 """
 
 # ##########  Imports  ##############
@@ -47,36 +47,23 @@ def admin_menu():
     print(" 5)  Return to Main Menu")
     print(" 6)  Turn Coffee Machine Off")
     print("-----------------------------")
-    print("(1 - 4) to add ingredients,")
+    print("Add ingredients (1 - 4)")
 
 
-def add_ingredients():
+def add_ingredients(resource):
     """Add resources to the Coffee Machine"""
     while True:
-        clear_screen()
-        report(resources["money"])
-        print(" 4)  Return to Admin Menu")
-        print("-------------------------")
+        # clear_screen()
         try:
-            this_choice = int(input("Which resource would you like to add? "))
-            if this_choice == 4:
-                break
-            if 1 <= this_choice <= 3:
-                this_selection = resource_items[this_choice - 1]
-                try:
-                    add_resource = int(
-                        input(
-                            f"\nHow much {this_selection.capitalize()} would you like to add? "
-                        )
-                    )
-                    resources[this_selection] = resources[this_selection] + add_resource
-                    report(resources["money"])
-                except ValueError:
-                    error()
-            else:
-                error()
+            add_resource = int(
+                input(f"\nHow much {resource.capitalize()} would you like to add? ")
+            )
+            resources[resource] += add_resource
+            break
         except ValueError:
-            error()
+            print("\nInvalid Input!  Numerical values only!")
+            input("press any key to continue...")
+            admin_menu()
 
 
 def remove_ingredients(coffee):
@@ -117,10 +104,10 @@ while not end_app:
     select = None
 
     # Main Menu user input
-    while choice not in ('1', '2', '3', '4'):
+    while choice not in ("1", "2", "3", "4"):
         main_menu()
         choice = input("Please make a selection: ")
-        if choice not in ('1', '2', '3', '4'):
+        if choice not in ("1", "2", "3", "4"):
             error(4)
             choice = None
 
@@ -145,7 +132,9 @@ while not end_app:
             else:
                 paid = None
                 while not paid:
-                    paid = input(f"\nPlease insert ${MENU[select]["cost"]:.2f} for you hot cup of {select.capitalize()}: ")
+                    paid = input(
+                        f"\nPlease insert ${MENU[select]["cost"]:.2f} for you hot cup of {select.capitalize()}: "
+                    )
 
                     # check user enters correct amount - EXACT CHANGE ONLY!!
                     try:
@@ -174,17 +163,17 @@ while not end_app:
         else:
             # process admin input
             choice = None
-            while choice not in ('1', '2', '3', '4', '5', '6'):
+            while choice not in ("1", "2", "3", "4", "5", "6"):
                 admin_menu()
                 choice = input("Please select (1 - 6): ")
 
                 # Add ingredients
-                if choice in ('1', '2', '3', '4'):
-                    print(f"You Selected: {choice}")
-                    end_app = True
+                if choice in ("1", "2", "3", "4"):
+                    add_ingredients(resource_items[int(choice) - 1])
+                    choice = None
 
                 # input error
-                elif choice not in ('5', '6'):
+                elif choice not in ("5", "6"):
                     error(6)
                     choice = None
 
@@ -192,10 +181,11 @@ while not end_app:
             # beginning and return to the Main Menu.
 
             # Turn off Coffee Machine  - -  end app
-            if choice == '6':
+            if choice == "6":
                 end_app = True
                 break
 
+    break
 
 
 # End the app
