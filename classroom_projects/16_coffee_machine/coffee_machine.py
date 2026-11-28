@@ -39,15 +39,15 @@ def admin_menu():
     clear_screen()
     print("  Current    Ingredients")
     print("-----------------------------")
-    print(f" 1)  Water\t{resources['water']} ml")
-    print(f" 2)  Milk\t{resources['milk']} ml")
-    print(f" 3)  Coffee\t{resources['coffee']} g")
+    print(f" 1)  Water\t{resources['water']}  units")
+    print(f" 2)  Milk\t{resources['milk']}  units")
+    print(f" 3)  Coffee\t{resources['coffee']}  units")
     print(f" 4)  Cash\t${resources["money"]:.2f}")
     print("-----------------------------")
-    print(" 5)  Add Ingredients")
-    print(" 6)  Return to Main Menu")
-    print(" 7)  Turn Coffee Machine Off")
+    print(" 5)  Return to Main Menu")
+    print(" 6)  Turn Coffee Machine Off")
     print("-----------------------------")
+    print("(1 - 4) to add ingredients,")
 
 
 def add_ingredients():
@@ -109,69 +109,93 @@ options = ["espresso", "latte", "cappuccino"]
 resource_items = ["water", "milk", "coffee", "money"]
 end_app = False
 
+
 # ########  Run the App  #############
 while not end_app:
-    # Clear Screen, Print Logo, Display the Menu
+    # set initial variables
     choice = None
     select = None
-    # user input
-    while choice not in (1, 2, 3, 4):
+
+    # Main Menu user input
+    while choice not in ('1', '2', '3', '4'):
         main_menu()
-        try:
-            choice = int(input("Please make a selection: "))
-            if not 1 <= choice <= 4:
-                error(4)
-                choice = None
-        except ValueError:
+        choice = input("Please make a selection: ")
+        if choice not in ('1', '2', '3', '4'):
             error(4)
             choice = None
-    # process user input
-    if choice in (1, 2, 3):
-        low_ingredients = False
-        # make sure there is enough ingredients
-        select = options[choice - 1]
-        if resources["water"] < MENU[select]["ingredients"]["water"]:
-            low_ingredients = True
-        elif resources["milk"] < MENU[select]["ingredients"]["milk"]:
-            low_ingredients = True
-        elif resources["coffee"] < MENU[select]["ingredients"]["coffee"]:
-            low_ingredients = True
 
-        if low_ingredients:
-            print(f"\nWe're sorry, The machine is out of {select.capitalize()}.")
-            print("Please notify your administrator.")
-            input("\npress any key to continue...")
+        # process user input
+        elif choice in (1, 2, 3):
+            # make sure there is enough ingredients
+            low_ingredients = False
+            select = options[choice - 1]
+            if resources["water"] < MENU[select]["ingredients"]["water"]:
+                low_ingredients = True
+            elif resources["milk"] < MENU[select]["ingredients"]["milk"]:
+                low_ingredients = True
+            elif resources["coffee"] < MENU[select]["ingredients"]["coffee"]:
+                low_ingredients = True
 
-        else:
-            paid = None
-            while not paid:
-                paid = input(f"\nPlease insert ${MENU[select]["cost"]:.2f} for you hot cup of {select.capitalize()}: ")
-                try:
-                    if float(paid) == MENU[select]["cost"]:
-                        resources["money"] += float(paid)
-                    else:
-                        print("\nInvalid Amount:")
+            if low_ingredients:
+                print(f"\nWe're sorry, The machine is out of {select.capitalize()}.")
+                print("Please notify your administrator.")
+                input("\npress any key to continue...")
+
+            # prompt to pay for coffee
+            else:
+                paid = None
+                while not paid:
+                    paid = input(f"\nPlease insert ${MENU[select]["cost"]:.2f} for you hot cup of {select.capitalize()}: ")
+
+                    # check user enters correct amount - EXACT CHANGE ONLY!!
+                    try:
+                        if float(paid) == MENU[select]["cost"]:
+                            resources["money"] += float(paid)
+                        else:
+                            print("\nInvalid Amount:")
+                            input("press any key to continue...")
+                            paid = "pass"
+                            main_menu()
+                            break
+                    except ValueError:
+                        print("\nInsufficient funds for the coffee.")
                         input("press any key to continue...")
                         paid = "pass"
                         main_menu()
-                        break
-                except ValueError:
-                    print("You need to add the cost of the coffee.")
+
+                # coffee paid for  -  dispense the coffee
+                if paid != "pass":
+                    remove_ingredients(select)
+                    print(f"\nEnjoy your {select.capitalize()}.")
+                    choice = None
                     input("press any key to continue...")
-                    paid = None
-            if paid != "pass":
-                remove_ingredients(select)
-                print(f"\nEnjoy your {select.capitalize()}.")
-                choice = None
-                input("press any key to continue...")
 
-    else:
-        admin_menu()
+        # Admin Menu
+        else:
+            # process admin input
+            choice = None
+            while choice not in ('1', '2', '3', '4', '5', '6'):
+                admin_menu()
+                choice = input("Please select (1 - 6): ")
 
-        # Turn off the coffee machine (end the app)
-        # else:
-        end_app = True
-        break
+                # Add ingredients
+                if choice in ('1', '2', '3', '4'):
+                    print(f"You Selected: {choice}")
+                    end_app = True
+
+                # input error
+                elif choice not in ('5', '6'):
+                    error(6)
+                    choice = None
+
+            # an input of 5 will just reroute back to the
+            # beginning and return to the Main Menu.
+
+            # Turn off Coffee Machine  - -  end app
+            if choice == '6':
+                end_app = True
+                break
+
 
 
 # End the app
