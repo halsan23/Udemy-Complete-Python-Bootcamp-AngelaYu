@@ -42,7 +42,7 @@ def admin_menu():
     print(f" 1)  Water\t{resources['water']}  units")
     print(f" 2)  Milk\t{resources['milk']}  units")
     print(f" 3)  Coffee\t{resources['coffee']}  units")
-    print(f" 4)  Cash\t${resources["money"]:.2f}")
+    print(f" 4)  Money\t${resources["money"]:.2f}")
     print("-----------------------------")
     print(" 5)  Return to Main Menu")
     print(" 6)  Turn Coffee Machine Off")
@@ -133,7 +133,7 @@ while not end_app:
                 paid = None
                 while not paid:
                     paid = input(
-                        f"\nC)ancel, or insert ${MENU[select]["cost"]:.2f} for a hot cup of {select.capitalize()}: "
+                        f"\nC)ancel, or insert ${MENU[select]['cost']:.2f} for a hot cup of {select.capitalize()}: "
                     )
                     if paid in ("c", "cancel"):
                         main_menu()
@@ -144,7 +144,7 @@ while not end_app:
                                 resources["money"] += float(paid)
                             else:
                                 print(
-                                    f"\nInvalid Amount: {select.capitalize()} costs ${MENU[select]["cost"]:.2f}"
+                                    f"\nInvalid Amount: {select.capitalize()} costs ${MENU[select]['cost']:.2f}"
                                 )
                                 input("press any key to continue...")
                                 paid = None
